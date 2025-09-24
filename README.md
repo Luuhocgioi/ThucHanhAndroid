@@ -1,2 +1,1 @@
-# ThucHanhAndroid
-Luuu
+📝 Giới thiệu
