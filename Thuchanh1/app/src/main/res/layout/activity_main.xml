@@ -17,9 +17,11 @@
         android:layout_marginEnd="94dp"
         android:layout_marginBottom="256dp"
         android:backgroundTint="#B3AAAA"
+        android:drawableLeft="@drawable/lock"
+        android:drawableRight="@drawable/view"
         android:ems="10"
         android:fontFamily="@font/rubik_light"
-        android:hint="| Conform your password"
+        android:hint="| Confirm your password"
         android:inputType="textPassword"
         android:selectAllOnFocus="false"
         android:singleLine="false"
@@ -87,6 +89,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="96dp"
         android:backgroundTint="#FD8282"
+        android:drawableLeft="@drawable/email"
         android:ems="10"
         android:fontFamily="@font/rubik_light"
         android:hint="| demo@email.com"
@@ -105,6 +108,7 @@
         android:layout_marginTop="13dp"
         android:layout_marginEnd="94dp"
         android:backgroundTint="#FD8282"
+        android:drawableLeft="@drawable/phone"
         android:ems="10"
         android:fontFamily="@font/rubik_light"
         android:hint="| +84 764 08 3594"
@@ -153,6 +157,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="95dp"
         android:backgroundTint="#B3AAAA"
+        android:drawableLeft="@drawable/lock"
+        android:drawableRight="@drawable/view"
         android:ems="10"
         android:fontFamily="@font/rubik_light"
         android:hint="| enter your password"
@@ -233,5 +239,13 @@
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/btnCreate"
         app:layout_constraintVertical_bias="1.0" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="29dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="314dp">
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
