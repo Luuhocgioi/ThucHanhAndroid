@@ -10,13 +10,13 @@
 
 | Màn hình đăng nhập | Màn hình chào mừng |
 |--------------------|--------------------|
-| ![Login Screen](./Image/Login1.png) | ![Welcome Screen](./Image/Login2.png) |
+| ![Login Screen](./Image/Login1.png) | ![Welcome Screen](./Image/Login3.png) |
 
 ---
 
 ## ⚙️ Chức năng chính
 - Nhập **tên tài khoản** và **mật khẩu**.  
-- Kiểm tra thông tin đăng nhập (có thể là dữ liệu cố định hoặc từ logic trong code).  
+- Kiểm tra thông tin đăng nhập 
 - Nếu đúng → chuyển sang màn hình chào mừng (`MainActivity2`).  
 - Nếu sai → hiển thị thông báo lỗi (`sai tk hoac mat khau`).  
 
