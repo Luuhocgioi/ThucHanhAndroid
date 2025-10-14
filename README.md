@@ -53,10 +53,3 @@ Bao gồm kiểm tra tài khoản và chuyển sang màn hình mới sau khi đ�
 > ✨ *Tôi sẽ tiếp tục cập nhật thêm các dự án mới trong thời gian tới.*
 
 ---
-
-<div align="center">
-
-👨‍💻 **Tác giả:** *Lưu Nguyễn Hoàng*  
-📅 **Cập nhật gần nhất:** *Tháng 10 / 2025*
-
-</div>
