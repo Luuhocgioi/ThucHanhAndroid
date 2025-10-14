@@ -13,8 +13,8 @@
 
 ### 💱 Currency Converter
 <div align="center">
-  <img src="C:\MyProjects\ThucHanhAndroidMoi\UnitConverter\Image/Currency1.png" width="200" alt="Currency Converter Initial">
-  <img src="C:\MyProjects\ThucHanhAndroidMoi\UnitConverter\Image/Currency2.png" width="200" alt="Currency Converter Result">
+  <img src="Image/Currency1.png" width="200" alt="Currency Converter Initial">
+  <img src="Image/Currency2.png" width="200" alt="Currency Converter Result">
 </div>
 
 **Mô tả:**  
@@ -34,5 +34,5 @@ Giao diện đơn giản, trực quan, phù hợp với người mới học l�
 **📸 Hình ảnh minh họa:**  
 | Giao diện ban đầu | Sau khi quy đổi |
 |--------------------|-----------------|
-| ![Initial](./Screenshot%202025-10-14%20192551.png) | ![Result](./Screenshot%202025-10-14%20192602.png) |
+| ![Initial](.Image/Currency1.png) | ![Result](./Image/Currency2.png) |
 </div>
