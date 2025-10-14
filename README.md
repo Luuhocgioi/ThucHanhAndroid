@@ -41,7 +41,7 @@ Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 
 ## 🔑 [Login Example](./LamthemDangnhap)
 Ứng dụng mô phỏng đăng nhập cơ bản với giao diện thân thiện.  
-Bao gồm kiểm tra tài khoản và hiển thị thông tin sau khi đăng nhập.
+Bao gồm kiểm tra tài khoản và chuyển sang màn hình mới sau khi đăng nhập.
 
 | Màn hình đầu tiên |  Màn hình đăng nhập | Sau khi đăng nhập sẽ chuyển sang màn hình mới |
 |-------------------|----------------------|-------------------|
