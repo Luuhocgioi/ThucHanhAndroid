@@ -14,7 +14,7 @@
 ### 💱 Currency Converter
 <div align="center">
   <img src="Screenshot 2025-10-14 192551.png" width="200" alt="Currency Converter Initial">
-  <img src="Screenshot 2025-10-14 192602.png" width="200" alt="Currency Converter Result">
+  <img src="C:\Users\TEMP.LUU.006\OneDrive\Hình ảnh\Screenshots\Screenshot 2025-10-14 192602.png" width="200" alt="Currency Converter Result">
 </div>
 
 **Mô tả:**  
