@@ -7,56 +7,32 @@
 
 ---
 
-
-# 💱 Currency Converter App
-
-Ứng dụng **Currency Converter** giúp bạn dễ dàng chuyển đổi từ **VNĐ (Việt Nam đồng)** sang **CNY (Nhân dân tệ Trung Quốc)** với giao diện trực quan, thân thiện và thao tác nhanh chóng.
+## 🧩 Dự án của tôi
 
 ---
 
-## 🚀 Tính năng
+### 💱 Currency Converter
+<div align="center">
+  <img src="./Screenshot%202025-10-14%20192551.png" width="200" alt="Currency Converter Initial">
+  <img src="./Screenshot%202025-10-14%20192602.png" width="200" alt="Currency Converter Result">
+</div>
 
-- ✅ Nhập số tiền VNĐ cần quy đổi  
-- ✅ Hiển thị kết quả quy đổi sang CNY  
-- ✅ Giao diện tối giản, dễ sử dụng  
-- ✅ Nút **Convert** thực hiện tính toán tức thì  
+**Mô tả:**  
+Ứng dụng Android giúp quy đổi tiền tệ từ **VNĐ (Việt Nam đồng)** sang **CNY (Nhân dân tệ Trung Quốc)**.  
+Giao diện đơn giản, trực quan, phù hợp với người mới học lập trình Android.  
 
----
+**🛠️ Công nghệ sử dụng:**  
+- Android Studio  
+- XML (ConstraintLayout)  
+- Java hoặc Kotlin  
 
-## 🖼️ Giao diện minh họa
+**⚙️ Chức năng:**  
+- Nhập số tiền cần quy đổi (VNĐ)  
+- Nhấn nút **Convert** để hiển thị kết quả bằng CNY  
+- Tỷ giá quy đổi cố định (~1 CNY = 3,500 VND)  
 
-### 🔹 Màn hình ban đầu
-![Currency Converter - Initial](./Screenshot%202025-10-14%20192551.png)
-
-### 🔹 Sau khi chuyển đổi
-![Currency Converter - Result](./Screenshot%202025-10-14%20192602.png)
-
----
-
-## ⚙️ Công nghệ sử dụng
-
-- **Ngôn ngữ:** Java / Kotlin  
-- **Nền tảng:** Android  
-- **Giao diện:** XML + ConstraintLayout  
-
----
-
-## 🧮 Ví dụ chuyển đổi
-
-| VNĐ (VND) | CNY (Nhân dân tệ) |
-|------------|--------------------|
-| 100,000    | 28.57              |
-| 300,000    | 85.71              |
-| 1,000,000  | 285.70             |
-
-*(Tỷ giá quy đổi: khoảng **1 CNY ≈ 3,500 VND**)*
-
----
-
-## 📦 Cài đặt & chạy ứng dụng
-
-1. Clone dự án:
-   ```bash
-   git clone https://github.com/<tên-người-dùng>/<tên-dự-án>.git
-
+**📸 Hình ảnh minh họa:**  
+| Giao diện ban đầu | Sau khi quy đổi |
+|--------------------|-----------------|
+| ![Initial](./Screenshot%202025-10-14%20192551.png) | ![Result](./Screenshot%202025-10-14%20192602.png) |
 </div>
