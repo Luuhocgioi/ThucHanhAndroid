@@ -13,8 +13,8 @@
 
 ### 💱 Currency Converter
 <div align="center">
-  <img src="Image/Currency1.png" width="200" alt="Currency Converter Initial">
-  <img src="Image/Currency2.png" width="200" alt="Currency Converter Result">
+  <img src="C:\MyProjects\ThucHanhAndroidMoi\UnitConverter\Image/Currency1.png" width="200" alt="Currency Converter Initial">
+  <img src="C:\MyProjects\ThucHanhAndroidMoi\UnitConverter\Image/Currency2.png" width="200" alt="Currency Converter Result">
 </div>
 
 **Mô tả:**  
