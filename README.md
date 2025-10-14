@@ -13,8 +13,8 @@
 
 ### 💱 Currency Converter
 <div align="center">
-  <img src="./Screenshot%202025-10-14%20192551.png" width="200" alt="Currency Converter Initial">
-  <img src="./Screenshot%202025-10-14%20192602.png" width="200" alt="Currency Converter Result">
+  <img src="Screenshot 2025-10-14 192551.png" width="200" alt="Currency Converter Initial">
+  <img src="Screenshot 2025-10-14 192602.png" width="200" alt="Currency Converter Result">
 </div>
 
 **Mô tả:**  
