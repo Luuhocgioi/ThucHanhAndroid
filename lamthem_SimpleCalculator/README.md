@@ -7,9 +7,9 @@ Giao diện được thiết kế tối giản, dễ nhìn và thân thiện v�
 
 ## 🖼️ Giao diện minh họa
 
-| Giao diện ban đầu | Sau khi bấm nút 5 và nút 2 | Sau khi bấm nút x và nút 2 | Sau khi bấm nút =|
-|--------------------|---------------------------|----------------------------|------------------|
-| ![Initial](./Image/Calculator1.png) | ![Next](./Image/Calculator2.png) | ![Nextt][.Image/Calculator3.png]| ![Result][.Image/Calculator4.png] |
+| Giao diện ban đầu | Sau khi bấm nút 5, nút 0 và nút 2 | Sau khi bấm nút x và nút 2 | Sau khi bấm nút =|
+|--------------------|----------------------------------|----------------------------|------------------|
+| ![Initial](./Image/Calculator1.png) | ![Next](./Image/Calculator2.png) | ![Nextt][./Image/Calculator3.png]| ![Result][./Image/Calculator4.png] |
 
 ---
 
