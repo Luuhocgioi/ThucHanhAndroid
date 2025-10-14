@@ -12,12 +12,13 @@ import com.google.android.material.button.MaterialButton;
 public class MainActivity extends AppCompatActivity {
     EditText edtVND, edtCYN;
     MaterialButton btnConvert;
+
     final double VND_TO_CYN = 1.0 / 3500.0;
 
     void init() {
         edtVND = findViewById(R.id.edtVND);
         edtCYN = findViewById(R.id.edtCYN);
-        btnConvert = findViewById(R.id.convertButton);
+        btnConvert = findViewById(R.id.btnConvert);
     }
 
     @Override
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
+
+        edtCYN.setEnabled(false);
+        edtVND.setText("0");
 
         btnConvert.setOnClickListener(new View.OnClickListener() {
             @Override
