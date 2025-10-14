@@ -35,7 +35,7 @@ Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 
 | Giao diện đầu tiên | Giao diện xanh | Giao diện màu đỏ | Giao diện màu vàng |
 |----------------|---------------|
-| ![Initial](./IamthemChangeTheme/Image/Change1) | ![Blue](./IamthemChangeTheme/Image/ChangeBlue.png) | ![Red](./IamthemChangeTheme/Image/ChangeRed.png) | ![Yellow](./IamthemChangeTheme/Image/ChangeYellow.png) |
+| ![Initial](./IamthemChangeTheme/Image/Change1.png) | ![Blue](./IamthemChangeTheme/Image/ChangeBlue.png) | ![Red](./IamthemChangeTheme/Image/ChangeRed.png) | ![Yellow](./IamthemChangeTheme/Image/ChangeYellow.png) |
 
 ---
 
