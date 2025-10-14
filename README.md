@@ -30,7 +30,7 @@ Giúp người dùng biết được tình trạng cơ thể hiện tại.
 ---
 
 ## 🎨 [Change Theme App](./IamthemChangeTheme)
-Ứng dụng đổi **chủ đề sáng/tối (Light/Dark Mode)** cho giao diện Android.  
+Ứng dụng đổi **chủ đề nhiều màu** cho giao diện Android.  
 Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 
 | Giao diện đầu tiên | Giao diện xanh | Giao diện màu đỏ | Giao diện màu vàng |
