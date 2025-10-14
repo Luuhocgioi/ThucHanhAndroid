@@ -45,7 +45,7 @@ Bao gồm kiểm tra tài khoản và hiển thị thông tin sau khi đăng nh�
 
 | Màn hình đầu tiên |  Màn hình đăng nhập | Sau khi đăng nhập sẽ chuyển sang màn hình mới |
 |-------------------|----------------------|-------------------|
-| ![Initial](./lamthemDangnhap/Image/Login1) | ![Login](./LamthemDangnhap/Image/Login2.png) | ![Welcome](./LamthemDangnhap/Image/Login3.png) |
+| ![Initial](./LamthemDangnhap/Image/Login1) | ![Login](./LamthemDangnhap/Image/Login2.png) | ![Welcome](./LamthemDangnhap/Image/Login3.png) |
 
 ---
 
