@@ -14,7 +14,7 @@ Mỗi dự án đều có phần giao diện minh họa và mô tả ngắn gọ
 Giao diện đơn giản, trực quan, dễ thao tác.
 
 | Giao diện ban đầu | Sau khi quy đổi |
-|--------------------|-----------------|
+|-------------------|-----------------|
 | ![Initial](./UnitConverter/Image/Currency1.png) | ![Result](./UnitConverter/Image/Currency2.png) |
 
 ---
@@ -44,12 +44,22 @@ Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 Bao gồm kiểm tra tài khoản và chuyển sang màn hình mới sau khi đăng nhập.
 
 | Màn hình đầu tiên |  Màn hình đăng nhập | Sau khi đăng nhập sẽ chuyển sang màn hình mới |
-|-------------------|----------------------|-------------------|
+|-------------------|---------------------|-----------------------------------------------|
 | ![Initial](./LamthemDangnhap/Image/Login1.png) | ![Login](./LamthemDangnhap/Image/Login2.png) | ![Welcome](./LamthemDangnhap/Image/Login3.png) |
 
 ---
+## 🧮 [Calculator App v2](./lamthem_SimpleCalculator)
 
+Ứng dụng Android mô phỏng **máy tính cơ bản**, giúp người dùng thực hiện các phép toán **cộng, trừ, nhân, chia**.  
+Giao diện được thiết kế tối giản, dễ nhìn và thân thiện với người dùng.
 
+## 🖼️ Giao diện minh họa
+
+| Giao diện ban đầu | Sau khi bấm nút 5, nút 0 và nút 2 | Sau khi bấm nút x và nút 2 | Sau khi bấm nút =|
+|--------------------|----------------------------------|----------------------------|------------------|
+| ![Initial](./lamthem_SimpleCalculator/Image/Calculator1.png) | ![Next](./lamthem_SimpleCalculator/Image/Calculator2.png) | ![Nextt](./lamthem_SimpleCalculator/Image/Calculator3.png)| ![Result](./lamthem_SimpleCalculator/Image/Calculator4.png) |
+
+---
 > ✨ *Tôi sẽ tiếp tục cập nhật thêm các dự án mới trong thời gian tới.*
 
 ---
