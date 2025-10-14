@@ -49,15 +49,6 @@ Bao gồm kiểm tra tài khoản và chuyển sang màn hình mới sau khi đ�
 
 ---
 
-## 🧱 [Layout Demo](./Layout1)
-Dự án minh họa các loại **layout cơ bản trong Android** như LinearLayout, RelativeLayout, ConstraintLayout.  
-Phù hợp cho người mới học thiết kế giao diện.
-
-| Ví dụ Layout | Ứng dụng thực tế |
-|---------------|------------------|
-| ![Layout1](./Layout1/Image/Layout1.png) | ![Layout2](./Layout1/Image/Layout2.png) |
-
----
 
 > ✨ *Tôi sẽ tiếp tục cập nhật thêm các dự án mới trong thời gian tới.*
 
