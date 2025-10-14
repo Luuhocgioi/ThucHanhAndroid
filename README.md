@@ -43,9 +43,9 @@ Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 Ứng dụng mô phỏng đăng nhập cơ bản với giao diện thân thiện.  
 Bao gồm kiểm tra tài khoản và hiển thị thông tin sau khi đăng nhập.
 
-| Màn hình đầu tiên |  Màn hình đăng nhập | Sau khi đăng nhập |
+| Màn hình đầu tiên |  Màn hình đăng nhập | Sau khi đăng nhập sẽ chuyển sang màn hình mới |
 |-------------------|----------------------|-------------------|
-| ![Initial](./lamthemDangnhap/Image/Login1) | | ![Login](./LamthemDangnhap/Image/Login2.png) | ![Welcome](./LamthemDangnhap/Image/Login3.png) |
+| ![Initial](./lamthemDangnhap/Image/Login1) | ![Login](./LamthemDangnhap/Image/Login2.png) | ![Welcome](./LamthemDangnhap/Image/Login3.png) |
 
 ---
 
