@@ -1,7 +1,7 @@
 # 💱 Currency Converter
 
 Ứng dụng Android giúp quy đổi tiền tệ từ **VNĐ (Việt Nam đồng)** sang **CNY (Nhân dân tệ Trung Quốc)**.  
-Giao diện đơn giản, trực quan – phù hợp cho người mới học lập trình Android.
+Giao diện đơn giản, bắt mắt cơ bản.
 
 ---
 
@@ -20,12 +20,11 @@ Giao diện đơn giản, trực quan – phù hợp cho người mới học l�
 
 ---
 
-## 🛠️ Công nghệ sử dụng
-- **Android Studio**
-- **XML (ConstraintLayout)**
-- **Java hoặc Kotlin**
+## 🚀 Cách chạy ứng dụng
+1. Clone dự án:
+   ```bash
+   git clone https://github.com/Luuhocgioi/ThucHanhAndroid/tree/5d186dc60631a2718f4ad675d576e78356490fff/UnitConverter
 
----
 
-📅 *Cập nhật: Tháng 10/2025*  
-👨‍💻 *Tác giả: Lưu Nguyễn Hoàng*
+
+
