@@ -33,9 +33,9 @@ Giúp người dùng biết được tình trạng cơ thể hiện tại.
 Ứng dụng đổi **chủ đề sáng/tối (Light/Dark Mode)** cho giao diện Android.  
 Lưu lại chế độ người dùng đã chọn bằng SharedPreferences.
 
-| Giao diện sáng | Giao diện tối |
+| Giao diện đầu tiên | Giao diện xanh | Giao diện màu đỏ | Giao diện màu vàng |
 |----------------|---------------|
-| ![Light](./IamthemChangeTheme/Image/Light.png) | ![Dark](./IamthemChangeTheme/Image/Dark.png) |
+| ![Initial](./IamthemChangeTheme/Image/Change1) | ![Blue](./IamthemChangeTheme/Image/ChangeBlue.png) | ![Red](./IamthemChangeTheme/Image/ChangeRed.png) | ![Yellow](./IamthemChangeTheme/Image/ChangeYellow.png) |
 
 ---
 
