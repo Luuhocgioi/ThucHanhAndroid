@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,11 +12,13 @@ public class MainActivity2 extends AppCompatActivity {
 
     EditText edtGK, edtCK, edtKQ;
     Button btnTB;
+    ImageButton btnBackToHome;
     void Tim(){
         edtGK = findViewById(R.id.edtGK);
         edtCK = findViewById(R.id.edtCK);
         edtKQ = findViewById(R.id.edtKQ);
         btnTB = findViewById(R.id.btnTB);
+        btnBackToHome = findViewById(R.id.btnBackToHome);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,12 @@ public class MainActivity2 extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 TinhDiemTB();
+            }
+        });
+        btnBackToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Đóng màn hình hiện tại và quay về
             }
         });
 
@@ -47,4 +56,5 @@ public class MainActivity2 extends AppCompatActivity {
 
         }
     }
+
 }

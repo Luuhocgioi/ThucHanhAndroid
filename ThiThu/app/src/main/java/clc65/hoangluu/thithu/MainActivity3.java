@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -19,9 +20,12 @@ public class MainActivity3 extends AppCompatActivity {
     ListView lsMon;
     ArrayList<String> dsMon ;
     ArrayAdapter<String> adapter;
+    ImageButton btnBackToHome;
 
     void Tim() {
         lsMon = findViewById(R.id.lsMon);
+        btnBackToHome = findViewById(R.id.btnBackToHome);
+
     }
 
     @Override
@@ -38,6 +42,12 @@ public class MainActivity3 extends AppCompatActivity {
             String mon = adapter.getItem(i).toString();
             String thongBao ="Bạn đã chọn "+ mon;
             Toast.makeText(MainActivity3.this, thongBao, Toast.LENGTH_SHORT).show();
+            }
+        });
+        btnBackToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Đóng màn hình hiện tại và quay về
             }
         });
     }

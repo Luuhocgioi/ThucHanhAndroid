@@ -33,19 +33,19 @@ public class MainActivity extends AppCompatActivity {
         btnCN2.setOnClickListener(view -> {
             Intent intent2 = new Intent(MainActivity.this, MainActivity2.class);
             startActivity(intent2);
-            });
+        });
         btnCN3.setOnClickListener(view -> {
             Intent intent3 = new Intent(MainActivity.this, MainActivity3.class);
             startActivity(intent3);
-            });
+        });
         btnCN4.setOnClickListener(view -> {
             Intent intent4 = new Intent(MainActivity.this, MainActivity4.class);
             startActivity(intent4);
-            });
+        });
         btnAbout.setOnClickListener(view -> {
-            Intent intent5 = new Intent(MainActivity.this, MainActivity5.class);
+            Intent intent5 = new Intent(MainActivity.this, AboutMeCollapsingActivity.class);
             startActivity(intent5);
-            });
+        });
 
-        }
     }
+}
