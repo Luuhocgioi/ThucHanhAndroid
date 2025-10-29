@@ -3,6 +3,7 @@ package thigk1.nguyenhoangluu.thigk;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +23,7 @@ public class DienTichSan extends AppCompatActivity {
     TextInputEditText edtWidth, edtHeight;
     Button btnCalculate;
     TextView tvResult;
+    ImageButton btnBack;
 
 
     @Override
@@ -29,7 +31,8 @@ public class DienTichSan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-
+        // Giả sử layout XML của bạn tên là "layout_dien_tich_san.xml"
+        // Nếu tên khác, bạn hãy chỉnh lại R.layout. tên_file_layout
         setContentView(R.layout.activity_dien_tich_san);
 
         tilWidth = findViewById(R.id.tilWidth);
@@ -38,6 +41,7 @@ public class DienTichSan extends AppCompatActivity {
         edtHeight = findViewById(R.id.edtHeight);
         btnCalculate = findViewById(R.id.btnCalculate);
         tvResult = findViewById(R.id.tvResult);
+        btnBack = findViewById(R.id.btnBack);
 
 
         btnCalculate.setOnClickListener(new View.OnClickListener() {
@@ -46,13 +50,20 @@ public class DienTichSan extends AppCompatActivity {
                 calculateArea();
             }
         });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
     }
-
 
     private void calculateArea() {
         tilWidth.setError(null);
@@ -70,19 +81,20 @@ public class DienTichSan extends AppCompatActivity {
             return;
         }
 
-
         try {
             double width = Double.parseDouble(widthStr);
             double height = Double.parseDouble(heightStr);
 
             double area = width * height;
+
             String resultText = String.format(Locale.getDefault(), "Kết quả: %.2f m²", area);
             tvResult.setText(resultText);
 
         } catch (NumberFormatException e) {
-
             tvResult.setText("Lỗi: Dữ liệu nhập không hợp lệ");
             e.printStackTrace();
         }
     }
 }
+
+
