@@ -52,10 +52,10 @@ public class CongTrinh extends AppCompatActivity {
     ArrayList<Landscape> getData() {
         ArrayList<Landscape> dsList = new ArrayList<>();
         // Cung cấp dữ liệu mới (với 3 tham số)
-        dsList.add(new Landscape("Tiêu đề hoạt động 1", "Thời gian 1", "anhnhatrang1"));
-        dsList.add(new Landscape("Tiêu đề hoạt động 2", "Thời gian 2", "anhnhatrang2"));
-        dsList.add(new Landscape("Tiêu đề hoạt động 3", "Thời gian 3", "anhnhatrang3"));
-        dsList.add(new Landscape("Tiêu đề hoạt động 4", "Thời gian 4", "anhnhatrang4"));
+        dsList.add(new Landscape("Công Trình Xây Dựng", "4 năm", "congtrinh1"));
+        dsList.add(new Landscape("Công Trình Hạ Tầng Kỹ Thuật", "6 năm", "congtrinh2"));
+        dsList.add(new Landscape("Nền Bắn Cần Cẩu Xây Dựng Trên Bầu Trời", "10 năm", "congtrinh3"));
+        dsList.add(new Landscape("Xây Dựng", "5 năm", "congtrinh4"));
         return dsList;
     }
 }
