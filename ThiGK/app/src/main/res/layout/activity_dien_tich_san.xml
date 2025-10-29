@@ -19,7 +19,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Nút quay lại (Giống file CongTrinh) -->
     <ImageButton
         android:id="@+id/btnBack"
         android:layout_width="48dp"
@@ -33,10 +32,7 @@
         app:layout_constraintStart_toStartOf="@+id/imageViewHeader"
         app:layout_constraintTop_toTopOf="@+id/imageViewHeader" />
 
-    <!-- Tiêu đề (Giống file CongTrinh) -->
 
-
-    <!-- 2. Width Input -->
 
     <TextView
         android:id="@+id/tvHeaderTitle"
@@ -74,7 +70,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 3. Height Input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilHeight"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -96,7 +91,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- 4. Calculate Button -->
     <Button
         android:id="@+id/btnCalculate"
         android:layout_width="0dp"
@@ -110,7 +104,6 @@
         app:layout_constraintStart_toStartOf="@+id/tilHeight"
         app:layout_constraintTop_toBottomOf="@+id/tilHeight" />
 
-    <!-- 5. Result Display -->
     <TextView
         android:id="@+id/tvResult"
         android:layout_width="wrap_content"
