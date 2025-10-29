@@ -56,7 +56,7 @@ public class DuToanChiPhi extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        String[] materials = new String[]{"Gạch men", "Đá hoa cương", "Sàn gỗ", "Thảm lót"};
+        String[] materials = new String[]{"Xi măng", "Gạch", "Đá ốp lát", "Ống nhựa","Sơn chống thấm"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, materials);
@@ -74,6 +74,30 @@ public class DuToanChiPhi extends AppCompatActivity {
             return;
         } else {
             tilArea.setError(null);
+        }
+
+        if (unitPriceStr.isEmpty()) {
+            tilUnitPrice.setError("Vui lòng nhập đơn giá");
+            return;
+        } else {
+            tilUnitPrice.setError(null);
+        }
+
+        try {
+            double area = Double.parseDouble(areaStr);
+            double unitPrice = Double.parseDouble(unitPriceStr);
+
+            double totalCost = area * unitPrice;
+
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            String formattedCost = currencyFormatter.format(totalCost);
+
+            tvEstimateResult.setText("Kết quả: " + formattedCost);
+
+        } catch (NumberFormatException e) {
+            tvEstimateResult.setText("Lỗi: Vui lòng nhập số hợp lệ");
+            tilArea.setError("Lỗi định dạng số");
+            tilUnitPrice.setError("Lỗi định dạng số");
         }
     }
 }

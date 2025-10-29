@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnCN2, btnCN3, btnCN4, btnAbout;
+    Button btnCN2, btnCN3, btnCN4, btnAbout,btnCostEstimate;
     ImageView imageView;
     androidx.constraintlayout.widget.ConstraintLayout constraintLayout;
     void Tim(){
@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         btnCN3 = findViewById(R.id.btnCN3);
         btnCN4 = findViewById(R.id.btnCN4);
         btnAbout = findViewById(R.id.btnAbout);
+        btnCostEstimate = findViewById(R.id.btnCostEstimate);
         constraintLayout = findViewById(R.id.main);
     }
 
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
         });
         btnAbout.setOnClickListener(view -> {
             Intent intent5 = new Intent(MainActivity.this, AboutMe.class);
+            startActivity(intent5);
+        });
+        btnCostEstimate.setOnClickListener(view -> {
+            Intent intent5 = new Intent(MainActivity.this, DuToanChiPhi.class);
             startActivity(intent5);
         });
 

@@ -5,19 +5,24 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E3F2FD"
     tools:context=".DienTichSan">
 
-    <!-- 1. Header Image -->
+    <!-- Header Section --><FrameLayout
+    android:id="@+id/headerContainer"
+    android:layout_width="0dp"
+    android:layout_height="220dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
     <ImageView
         android:id="@+id/imageViewHeader"
-        android:layout_width="0dp"
-        android:layout_height="220dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:contentDescription="Ảnh bìa"
         android:scaleType="centerCrop"
-        android:src="@drawable/header"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:src="@drawable/header" />
 
     <ImageButton
         android:id="@+id/btnBack"
@@ -28,93 +33,90 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Quay lại"
         android:src="@drawable/ic_baseline_arrow_back_24"
-        app:tint="@android:color/white"
-        app:layout_constraintStart_toStartOf="@+id/imageViewHeader"
-        app:layout_constraintTop_toTopOf="@+id/imageViewHeader" />
-
-
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/tvHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Diện tích sàn"
         android:textColor="@android:color/white"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imageViewHeader"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewHeader"
-        app:layout_constraintHorizontal_bias="0.794"
-        app:layout_constraintStart_toStartOf="@+id/imageViewHeader"
-        app:layout_constraintTop_toTopOf="@+id/imageViewHeader"
-        app:layout_constraintVertical_bias="0.297" />
+        android:textSize="32sp"
+        android:textStyle="bold" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilWidth"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+</FrameLayout>
+
+    <!-- Width Input --><com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilWidth"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="48dp"
+    android:layout_marginEnd="32dp"
+    android:hint="Chiều rộng (m)"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/headerContainer">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtWidth"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Chiều rộng (m)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewHeader">
+        android:inputType="numberDecimal" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtWidth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+</com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!-- Height Input --><com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/tilHeight"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="32dp"
+    android:layout_marginTop="24dp"
+    android:layout_marginEnd="32dp"
+    android:hint="Chiều cao (m)"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tilWidth">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilHeight"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edtHeight"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="Chiều cao (m)"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tilWidth">
+        android:inputType="numberDecimal" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edtHeight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+</com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+    <!-- Calculate Button --><Button
+    android:id="@+id/btnCalculate"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="32dp"
+    android:backgroundTint="#009688"
+    android:paddingVertical="14dp"
+    android:text="Tính diện tích"
+    android:textColor="@android:color/white"
+    android:textSize="18sp"
+    app:layout_constraintEnd_toEndOf="@+id/tilHeight"
+    app:layout_constraintStart_toStartOf="@+id/tilHeight"
+    app:layout_constraintTop_toBottomOf="@+id/tilHeight" />
 
-    <Button
-        android:id="@+id/btnCalculate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:text="Tính diện tích"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="@+id/tilHeight"
-        app:layout_constraintStart_toStartOf="@+id/tilHeight"
-        app:layout_constraintTop_toBottomOf="@+id/tilHeight" />
-
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="Kết quả: 0 m²"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCalculate" />
+    <!-- Result Display --><TextView
+    android:id="@+id/tvResult"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="48dp"
+    android:text="Kết quả: 0 m²"
+    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+    android:textColor="?android:attr/textColorPrimary"
+    android:textSize="28sp"
+    android:textStyle="bold"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btnCalculate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
