@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ThiGK">
         <activity
+            android:name=".DuToanChiPhi"
+            android:exported="false" />
+        <activity
             android:name=".AboutMe"
             android:exported="false" />
         <activity
