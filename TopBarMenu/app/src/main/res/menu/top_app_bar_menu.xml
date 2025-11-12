@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search"
+        android:title="Tìm kiếm"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Cài đặt"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_shop"
+        android:icon="@drawable/ic_shop"
+        android:title="Shop"
+        app:showAsAction="ifRoom"
+        />
+</menu>
