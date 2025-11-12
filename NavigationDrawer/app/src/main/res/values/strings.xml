@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NavigationDrawer</string>
+    <string name="navigation_drawer_open">Mở Drawer</string>
+    <string name="navigation_drawer_close">Đóng Drawer</string>
 </resources>
