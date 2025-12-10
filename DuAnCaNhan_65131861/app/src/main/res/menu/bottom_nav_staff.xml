@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Mục 1: Menu/Order (Làm việc chính) -->
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@android:drawable/ic_menu_edit"
+        android:title="Menu Order" />
+
+    <!-- Mục 2: Giỏ hàng (Thanh toán) -->
+    <item
+        android:id="@+id/nav_cart"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Giỏ hàng" />
+
+    <!-- Mục 3: Quản lý Đơn hàng (Notification/Thông báo đơn hàng mới) -->
+    <item
+        android:id="@+id/nav_orders"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="QL Đơn hàng" />
+
+    <!-- Mục 4: Cài đặt/Admin Panel (Liên kết tới SettingsFragment) -->
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@android:drawable/ic_menu_preferences"
+        android:title="Cài đặt" />
+
+</menu>

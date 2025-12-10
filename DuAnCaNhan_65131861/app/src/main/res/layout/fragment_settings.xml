@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context="clc65.hoangluu.duancanhan_65131861.fragments.SettingsFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header - Thông tin cơ bản -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cài đặt &amp; Tài khoản"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="16dp" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="2dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thông tin Người dùng"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#333333" />
+                <TextView
+                    android:id="@+id/tvRole"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Vai trò: Staff"
+                    android:textSize="16sp"
+                    android:layout_marginTop="8dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- Panel Admin (Hiển thị/Ẩn bằng code Java) -->
+        <LinearLayout
+            android:id="@+id/adminPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:padding="16dp"
+            android:background="@drawable/admin_panel_background">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bảng điều khiển Admin"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Nút Quản lý Sản phẩm (Mục tiêu 2.1.2) -->
+            <Button
+                android:id="@+id/btnManageProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quản lý Sản phẩm (CRUD)"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#FFB300"
+                android:textColor="@android:color/black"/>
+
+            <!-- Nút Quản lý Đơn hàng (Mục tiêu 2.1.4) -->
+            <Button
+                android:id="@+id/btnManageOrders"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Quản lý Đơn hàng &amp; Lịch sử"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#FFB300"
+                android:textColor="@android:color/black"/>
+
+        </LinearLayout>
+
+        <!-- Nút ĐĂNG NHẬP (Chỉ hiển thị khi CHƯA đăng nhập) -->
+        <Button
+            android:id="@+id/btnLoginRedirect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Đăng nhập / Đăng ký"
+            android:backgroundTint="#607D8B"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+
+        <!-- Nút Đăng xuất (Chỉ hiển thị khi ĐÃ đăng nhập) -->
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Đăng xuất"
+            android:backgroundTint="#D32F2F"
+            android:textColor="@android:color/white"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>

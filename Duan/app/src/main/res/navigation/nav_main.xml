@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="clc65.hoangluu.duan.fragments.HomeFragment"
+        android:label="Trang Chủ"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="clc65.hoangluu.duan.fragments.SearchFragment"
+        android:label="Tìm Kiếm"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="clc65.hoangluu.duan.fragments.SettingsFragment"
+        android:label="Cài Đặt"
+        tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="clc65.hoangluu.duan.fragments.CartFragment"
+        android:label="Giỏ hàng"
+        tools:layout="@layout/fragment_cart" />
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="clc65.hoangluu.duan.fragments.DetailFragment"
+        android:label="Chi tiết Sản phẩm"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ordersFragment"
+        android:name="clc65.hoangluu.duan.fragments.OrdersFragment"
+        android:label="Quản lý Hóa đơn"
+        tools:layout="@layout/fragment_orders" />
+
+    <fragment
+        android:id="@+id/tableStatusFragment"
+        android:name="clc65.hoangluu.duan.fragments.TableStatusFragment"
+        android:label="Quản lý Bàn"
+        tools:layout="@layout/fragment_table_status" />
+
+    <fragment
+        android:id="@+id/takeAwayFragment"
+        android:name="clc65.hoangluu.duan.fragments.TakeAwayFragment"
+        android:label="Đơn hàng Mang về"
+        tools:layout="@layout/fragment_take_away" />
+
+    <fragment
+        android:id="@+id/staffManagementFragment"
+        android:name="clc65.hoangluu.duan.fragments.StaffManagementFragment"
+        android:label="Quản lý Nhân viên"
+        tools:layout="@layout/fragment_staff_management" />
+
+    <fragment
+        android:id="@+id/revenueReportFragment"
+        android:name="clc65.hoangluu.duan.fragments.RevenueReportFragment"
+        android:label="Báo cáo Doanh thu"
+        tools:layout="@layout/fragment_revenue_report" />
+
+    <!-- Thêm Fragment Quản lý Thức uống -->
+    <fragment
+        android:id="@+id/drinkManagementFragment"
+        android:name="clc65.hoangluu.duan.fragments.DrinkManagementFragment"
+        android:label="Quản lý Thức uống"
+        tools:layout="@layout/fragment_drink_management" />
+
+    <action
+        android:id="@+id/action_global_home"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/nav_main"
+        app:popUpToInclusive="true"/>
+
+</navigation>
