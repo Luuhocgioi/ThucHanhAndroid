@@ -24,19 +24,16 @@ public class LoginDialogFragment extends DialogFragment {
     private FirebaseFirestore db;
     private static final String TAG = "LoginDialog";
 
-    // Interface để truyền dữ liệu (vai trò) về SettingsFragment (Activity is Listener)
     public interface LoginListener {
         void onLoginSuccess(String role);
     }
 
     private LoginListener loginListener;
 
-    // Gán Listener khi Dialog được attach vào Context
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            // Đảm bảo Fragment gọi Dialog (SettingsFragment) implement interface này
             loginListener = (LoginListener) getTargetFragment();
         } catch (ClassCastException e) {
             throw new ClassCastException("Calling Fragment must implement LoginListener");
@@ -46,7 +43,6 @@ public class LoginDialogFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Khởi tạo Firebase
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
     }
@@ -54,7 +50,6 @@ public class LoginDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Sử dụng View Binding cho layout dialog_login.xml
         binding = DialogLoginBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -63,7 +58,6 @@ public class LoginDialogFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Xử lý sự kiện click nút Đăng nhập (Inline Anonymous Listener)
         binding.btnDialogLogin.setOnClickListener(v -> {
             String email = binding.etLoginEmail.getText().toString().trim();
             String password = binding.etLoginPassword.getText().toString().trim();
@@ -73,7 +67,6 @@ public class LoginDialogFragment extends DialogFragment {
                 return;
             }
 
-            // Thực hiện đăng nhập Firebase
             attemptLogin(email, password);
         });
     }
@@ -85,10 +78,8 @@ public class LoginDialogFragment extends DialogFragment {
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Firebase Auth Success.");
-                        // Bước quan trọng: Đăng nhập thành công, lấy vai trò từ Firestore
                         fetchUserRole(mAuth.getCurrentUser().getUid());
                     } else {
-                        // Đăng nhập thất bại
                         showProgress(false);
                         Toast.makeText(getContext(), "Đăng nhập thất bại: Kiểm tra Email/Mật khẩu.", Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Auth Failed", task.getException());
@@ -104,12 +95,19 @@ public class LoginDialogFragment extends DialogFragment {
                     if (documentSnapshot.exists()) {
                         String role = documentSnapshot.getString("role");
                         if (role != null) {
-                            // Truyền vai trò về SettingsFragment
+
+                            // *** SỬA LỖI VÀ CHUẨN HÓA VAI TRÒ ***
+                            role = role.trim();
+                            if (role.length() > 0) {
+                                role = role.substring(0, 1).toUpperCase() + role.substring(1).toLowerCase();
+                            }
+                            // *** KẾT THÚC CHUẨN HÓA ***
+
                             loginListener.onLoginSuccess(role);
-                            dismiss(); // Đóng dialog
+                            dismiss();
                         } else {
                             Toast.makeText(getContext(), "Không tìm thấy vai trò người dùng.", Toast.LENGTH_SHORT).show();
-                            mAuth.signOut(); // Đăng xuất nếu không có vai trò hợp lệ
+                            mAuth.signOut();
                         }
                     } else {
                         Toast.makeText(getContext(), "Tài khoản không được phân quyền quản lý.", Toast.LENGTH_SHORT).show();

@@ -5,26 +5,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_main"
     tools:context=".fragments.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="80dp">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager_slider"
+        <!-- Header Section với Gradient -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/header_layout"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp" />
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_header_gradient"
+            android:paddingHorizontal="20dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="60dp"> <TextView
+            android:id="@+id/tv_greeting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Xin chào 👋"
+            android:textColor="@color/background_card"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:id="@+id/tv_store_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Coffee House"
+                android:textColor="@color/background_card"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_greeting" />
+
+            <ImageButton
+                android:id="@+id/btn_notifications"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_notifications"
+                app:tint="@color/background_card"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_store_name"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_banner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="-45dp"  app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager_slider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="16:8"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:tabBackground="@drawable/selector_slider_indicator"
+                    app:tabIndicatorHeight="0dp"
+                    app:tabGravity="center"
+                    app:tabMaxWidth="12dp"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Quick Actions Management Menu -->
         <TextView
             android:id="@+id/tv_management_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="Chức năng Quản lý"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:text="⚡ Chức năng nhanh"
+            android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:visibility="gone" />
@@ -33,115 +111,291 @@
             android:id="@+id/layout_management_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
+            android:paddingHorizontal="16dp"
             android:visibility="gone">
 
-            <!-- Hàng 1 -->
+            <!-- Hàng 1: Hóa đơn, Bàn, Mang về -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_orders"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
+                android:layout_marginEnd="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/card_tables"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginEnd="8dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Hóa Đơn" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_receipt"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Hóa đơn"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_tables"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
+                android:layout_marginHorizontal="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/card_orders"
                 app:layout_constraintEnd_toStartOf="@+id/card_takeaway"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginHorizontal="4dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bàn" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_table"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Quản lý bàn"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_takeaway"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
+                android:layout_height="110dp"
+                android:layout_marginStart="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/card_tables"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginStart="8dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mang Về" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_takeaway"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Mang về"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Hàng 2 -->
+            <!-- Hàng 2: Thức uống, Nhân viên, Doanh thu -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_drinks"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="6dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toBottomOf="@+id/card_orders"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/card_staff"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginEnd="8dp">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Thức uống" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_coffee"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Thức uống"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_staff"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginHorizontal="6dp"
+                android:visibility="gone"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toBottomOf="@+id/card_orders"
                 app:layout_constraintStart_toEndOf="@+id/card_drinks"
                 app:layout_constraintEnd_toStartOf="@+id/card_revenue"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginHorizontal="4dp"
-                android:visibility="gone">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nhân Viên" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_people"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Nhân viên"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_revenue"
                 android:layout_width="0dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
+                android:layout_height="110dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="6dp"
+                android:visibility="gone"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@color/background_card"
                 app:layout_constraintTop_toBottomOf="@+id/card_orders"
                 app:layout_constraintStart_toEndOf="@+id/card_staff"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_weight="1"
-                app:layout_constraintWidth_percent="0.3"
-                android:layout_marginStart="8dp"
-                android:visibility="gone">
-                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Doanh Thu" android:layout_gravity="center"/>
+                app:layout_constraintWidth_percent="0.32">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:src="@drawable/ic_chart"
+                        app:tint="@color/coffee_primary"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Doanh thu"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"/>
+
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_menu_header"
-            android:layout_width="wrap_content"
+        <!-- Menu Section Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="Thực đơn Đồ uống"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="28dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="16dp">
 
+            <TextView
+                android:id="@+id/tv_menu_header"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="☕ Thực đơn đồ uống"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btn_filter"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_filter"
+                android:contentDescription="Lọc"
+                app:tint="@color/coffee_primary"/>
+
+        </LinearLayout>
+
+        <!-- Products RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_menu_items"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+            android:paddingHorizontal="12dp"
+            android:clipToPadding="false"
             tools:listitem="@layout/item_product_card"/>
 
     </LinearLayout>

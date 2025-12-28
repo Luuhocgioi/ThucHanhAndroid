@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.content.Context;
+import android.content.SharedPreferences;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +40,18 @@ public class TableStatusFragment extends Fragment implements TableAdapter.OnTabl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // LOGIC KIỂM TRA QUYỀN TRUY CẬP (ADMIN HOẶC STAFF)
+        SharedPreferences sharedPref = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String userRole = sharedPref.getString("userRole", "Guest");
+        boolean isAuthenticated = FirebaseAuth.getInstance().getCurrentUser() != null;
+        boolean hasPermission = userRole.equalsIgnoreCase("Admin") || userRole.equalsIgnoreCase("Staff");
+
+        if (!isAuthenticated || !hasPermission) {
+            NavController navController = Navigation.findNavController(view);
+            navController.popBackStack();
+            return;
+        }
 
         setupRecyclerView();
         loadTableStatus();
@@ -73,17 +88,27 @@ public class TableStatusFragment extends Fragment implements TableAdapter.OnTabl
         // TODO: Thực hiện logic lắng nghe trạng thái bàn từ Firebase Realtime Database hoặc Firestore
     }
 
-    // Xử lý khi nhân viên nhấn vào một bàn
+    // *** TỐI ƯU HÓA: Xử lý khi nhân viên nhấn vào một bàn ***
     @Override
     public void onTableClick(Table table) {
-        if (table.getStatus().equals("Available")) {
-            Toast.makeText(getContext(), "Bắt đầu Order cho " + table.getName(), Toast.LENGTH_SHORT).show();
-            // TODO: Chuyển sang màn hình tạo đơn hàng mới (NewOrderFragment)
+        NavController navController = Navigation.findNavController(requireView());
+
+        if (table.getStatus().equalsIgnoreCase("Available")) {
+            // 1. Bàn trống: Chuyển sang CartFragment để tạo Order mới
+            Bundle bundle = new Bundle();
+            bundle.putString("targetId", table.getId()); // Truyền ID bàn
+            bundle.putString("orderType", "Table"); // Loại đơn hàng
+
+            // Navigate đến CartFragment (giả sử bạn đã có ID này trong Nav Graph)
+            navController.navigate(R.id.cartFragment, bundle);
+
         } else {
+            // 2. Bàn đang sử dụng: Chuyển sang màn hình chi tiết đơn hàng
             Toast.makeText(getContext(), "Xem Đơn hàng " + table.getCurrentOrderId() + " của " + table.getName(), Toast.LENGTH_SHORT).show();
-            // TODO: Chuyển sang màn hình chi tiết đơn hàng đang diễn ra
+            // TODO: Chuyển sang màn hình chi tiết đơn hàng đang diễn ra (OrderDetailFragment)
         }
     }
+    // ************************************************************
 
     @Override
     public void onDestroyView() {

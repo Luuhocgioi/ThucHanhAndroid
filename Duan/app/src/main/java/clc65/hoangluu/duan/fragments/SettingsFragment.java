@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import clc65.hoangluu.duan.RoleUpdateListener; // Import RoleUpdateListener
 import clc65.hoangluu.duan.databinding.FragmentSettingsBinding;
 
 public class SettingsFragment extends Fragment implements LoginDialogFragment.LoginListener {
@@ -41,36 +42,31 @@ public class SettingsFragment extends Fragment implements LoginDialogFragment.Lo
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
+                    // Đang đăng nhập -> Đăng xuất
                     mAuth.signOut();
-                    clearUserSession();
-                    Toast.makeText(getContext(), "Đã đăng xuất", Toast.LENGTH_SHORT).show();
+                    clearUserSession(); // Xóa vai trò đã lưu
                     updateUIBasedOnLoginStatus();
+                    Toast.makeText(getContext(), "Đã đăng xuất thành công.", Toast.LENGTH_SHORT).show();
 
-                    // TODO: Gửi tín hiệu đến HomeFragment hoặc Activity để cập nhật menu quản lý
-                    // Sau khi đăng xuất, cần buộc HomeFragment làm mới UI (bằng onResume hoặc callback)
-
+                    // Gửi tín hiệu chung đến Activity để cập nhật giao diện Quản lý sau khi đăng xuất
+                    if (getActivity() instanceof RoleUpdateListener) {
+                        ((RoleUpdateListener) getActivity()).onRoleUpdated("Guest");
+                    }
                 } else {
+                    // Chưa đăng nhập -> Mở Dialog
                     showLoginDialog();
                 }
             }
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        updateUIBasedOnLoginStatus();
-    }
-
     private void updateUIBasedOnLoginStatus() {
-        FirebaseUser user = mAuth.getCurrentUser();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        SharedPreferences sharedPref = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String userRole = sharedPref.getString(KEY_ROLE, "Guest");
 
-        String userRole = getContext()
-                .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-                .getString(KEY_ROLE, "Guest");
-
-        if (user != null) {
-            binding.btnLoginLogout.setText("Đăng Xuất");
+        if (currentUser != null) {
+            binding.btnLoginLogout.setText("Đăng Xuất (" + currentUser.getEmail() + ")");
             binding.tvUserRole.setText("Vai trò: " + userRole);
         } else {
             binding.btnLoginLogout.setText("Đăng Nhập");
@@ -101,9 +97,11 @@ public class SettingsFragment extends Fragment implements LoginDialogFragment.Lo
 
         Toast.makeText(getContext(), "Đăng nhập thành công! Vai trò: " + role, Toast.LENGTH_LONG).show();
 
-        // TODO: Gửi tín hiệu chung đến HomeFragment để cập nhật giao diện Quản lý (Quan trọng)
-        // Một cách là dùng getActivity().getSupportFragmentManager().findFragmentByTag(...)
-        // để gọi một phương thức cập nhật trên HomeFragment, hoặc tốt hơn là dùng LiveData/Interface.
+        // **KHẮC PHỤC LỖI: Gửi tín hiệu chung đến Activity để cập nhật giao diện Quản lý**
+        // MainActivity đã implement RoleUpdateListener
+        if (getActivity() instanceof RoleUpdateListener) {
+            ((RoleUpdateListener) getActivity()).onRoleUpdated(role);
+        }
     }
 
     @Override

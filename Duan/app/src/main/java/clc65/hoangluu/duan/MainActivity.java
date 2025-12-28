@@ -3,6 +3,7 @@ package clc65.hoangluu.duan;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
@@ -12,7 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import clc65.hoangluu.duan.databinding.ActivityMainBinding;
 import clc65.hoangluu.duan.fragments.HomeFragment;
-import clc65.hoangluu.duan.data.LocalCartRepository; // Cần thiết
+import clc65.hoangluu.duan.data.LocalCartRepository;
 
 // Giả định RoleUpdateListener.java đã được tạo riêng
 public class MainActivity extends AppCompatActivity implements RoleUpdateListener {
@@ -35,19 +36,26 @@ public class MainActivity extends AppCompatActivity implements RoleUpdateListene
 
         if (navHostFragment != null) {
             navController = navHostFragment.getNavController();
+
+            // KHẮC PHỤC LỖI VIEW BINDING: SỬ DỤNG ID bottomNav
             BottomNavigationView bottomNav = binding.bottomNav;
+
+            // 1. Setup BottomNavigationView với NavController
             NavigationUI.setupWithNavController(bottomNav, navController);
 
-            // THIẾT LẬP LISTENER CHO FAB (Nút Giỏ hàng)
+            // *** KHẮC PHỤC LỖI: THIẾT LẬP LISTENER CHO FAB (Nút Giỏ hàng) ***
             binding.fabCart.setOnClickListener(v -> {
+                // Chuyển đến CartFragment
                 navController.navigate(R.id.cartFragment);
             });
+            // ***************************************************************
 
-            // Ẩn/Hiện FAB và Badge dựa trên vị trí Fragment
+            // 2. Logic Ẩn/hiện Fab Container và cập nhật Badge
             navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+                // Hiển thị FAB khi ở màn hình chính (Home) hoặc tìm kiếm (Search)
                 if (destination.getId() == R.id.homeFragment || destination.getId() == R.id.searchFragment) {
                     binding.layoutFabContainer.setVisibility(View.VISIBLE);
-                    updateCartBadge(); // Cập nhật Badge khi quay lại màn hình chính
+                    updateCartBadge(); // Cập nhật Badge khi quay lại
                 } else {
                     binding.layoutFabContainer.setVisibility(View.GONE);
                 }
@@ -58,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements RoleUpdateListene
     @Override
     protected void onResume() {
         super.onResume();
-        // Cập nhật Badge khi Activity quay lại foreground
         updateCartBadge();
     }
 
@@ -66,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements RoleUpdateListene
     // LOGIC BADGE (ĐẾM SỐ LƯỢNG MỤC TRONG GIỎ HÀNG)
     // ==========================================================
     public void updateCartBadge() {
-        if (cartRepository == null) return;
+        if (cartRepository == null || binding == null) return; // Bảo vệ Null Pointer
 
         int itemCount = cartRepository.getCartItems().size();
 
@@ -85,11 +92,10 @@ public class MainActivity extends AppCompatActivity implements RoleUpdateListene
 
         NavHostFragment navHostFragment = (NavHostFragment) fragmentManager.findFragmentById(binding.navHostFragment.getId());
         if (navHostFragment != null) {
+            Fragment homeFragment = navHostFragment.getChildFragmentManager().findFragmentById(R.id.homeFragment);
 
-            Fragment currentFragment = navHostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
-
-            if (currentFragment instanceof HomeFragment) {
-                ((HomeFragment) currentFragment).updateManagementMenuVisibility(newRole);
+            if (homeFragment instanceof HomeFragment) {
+                ((HomeFragment) homeFragment).updateManagementMenuVisibility(newRole);
             }
         }
     }

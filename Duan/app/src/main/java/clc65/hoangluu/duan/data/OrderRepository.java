@@ -38,22 +38,25 @@ public class OrderRepository {
     // LOGIC TẠO ĐƠN HÀNG MỚI (CHÍNH THỨC)
     // ==========================================================
 
-    // Ghi đơn hàng lên Firebase Firestore
     public void createNewOrder(Order order, LocalCartRepository localCartRepository, OnOrderCreationListener listener) {
 
         // 1. Chuẩn bị dữ liệu
         String staffId = mAuth.getCurrentUser() != null ? mAuth.getCurrentUser().getUid() : "anonymous";
         order.setStaffId(staffId);
-        order.setStatus("Pending");
+
+        // *** TỐI ƯU HÓA: MẶC ĐỊNH LÀ "PREPARING" (Đang Chuẩn bị) ***
+        order.setStatus("Preparing");
+        // ************************************************************
 
         DocumentReference newOrderRef = ordersRef.document(); // Tạo tham chiếu mới để lấy ID trước
+        order.setId(newOrderRef.getId()); // Gán ID cho đối tượng Order
 
         WriteBatch batch = db.batch();
 
         // 2. Thêm đơn hàng vào collection 'orders'
         batch.set(newOrderRef, order);
 
-        // 3. Nếu là đơn "Table", cập nhật trạng thái bàn (Tác vụ phức tạp hơn)
+        // 3. Nếu là đơn "Table", cập nhật trạng thái bàn (Sử dụng ID bàn từ TargetId)
         if ("Table".equals(order.getType())) {
             String tableId = order.getTargetId();
             DocumentReference tableDocRef = tablesRef.document(tableId);
@@ -62,6 +65,7 @@ public class OrderRepository {
             tableUpdates.put("status", "Occupied"); // Đổi trạng thái bàn thành Đang sử dụng
             tableUpdates.put("currentOrderId", newOrderRef.getId()); // Lưu ID đơn hàng hiện tại
 
+            // *** SỬ DỤNG batch.update() AN TOÀN HƠN SET ***
             batch.update(tableDocRef, tableUpdates);
         }
 
@@ -82,14 +86,38 @@ public class OrderRepository {
     // LOGIC CẬP NHẬT TRẠNG THÁI (CHUNG)
     // ==========================================================
 
-    public void updateOrderStatus(String orderId, String newStatus) {
+    public void updateOrderStatus(String orderId, String newStatus, String orderType, String targetId) {
         ordersRef.document(orderId)
                 .update("status", newStatus)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "Order status updated to: " + newStatus))
+                .addOnSuccessListener(aVoid -> {
+                    Log.d(TAG, "Order status updated to: " + newStatus);
+
+                    // *** LOGIC TỐI ƯU HÓA: XỬ LÝ TRẠNG THÁI BÀN KHI ORDER ĐƯỢC CẬP NHẬT ***
+                    if ("Table".equals(orderType)) {
+                        DocumentReference tableDocRef = tablesRef.document(targetId);
+                        Map<String, Object> tableUpdates = new HashMap<>();
+
+                        if ("Completed".equals(newStatus)) {
+                            // Order hoàn thành -> Bàn trở về Available
+                            tableUpdates.put("status", "Available");
+                            tableUpdates.put("currentOrderId", null);
+                        } else if ("Ready".equals(newStatus)) {
+                            // Order sẵn sàng -> Bàn đang được phục vụ
+                            tableUpdates.put("status", "Serving");
+                        }
+
+                        if (!tableUpdates.isEmpty()) {
+                            db.runTransaction(transaction -> {
+                                transaction.update(tableDocRef, tableUpdates);
+                                return null;
+                            }).addOnFailureListener(e -> Log.e(TAG, "Failed to update table status", e));
+                        }
+                    }
+                    // *******************************************************************
+                })
                 .addOnFailureListener(e -> Log.w(TAG, "Error updating status", e));
     }
 
-    // Interface Callback để thông báo kết quả
     public interface OnOrderCreationListener {
         void onSuccess(String orderId);
         void onFailure(String errorMessage);

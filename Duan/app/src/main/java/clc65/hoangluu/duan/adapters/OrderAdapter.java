@@ -17,11 +17,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
 
     private List<Order> orderList;
     private OnOrderClickListener listener;
-    private static final DecimalFormat priceFormat = new DecimalFormat("#,### VNĐ");
+    private static final DecimalFormat priceFormat = new DecimalFormat("#,###đ");
 
     public interface OnOrderClickListener {
         void onOrderClick(Order order);
-        void onStatusActionClick(Order order);
+        void onAcceptOrder(Order order);
+        void onRejectOrder(Order order);
     }
 
     public void setOnOrderClickListener(OnOrderClickListener listener) {
@@ -50,24 +51,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Order order = orderList.get(position);
         holder.bind(order);
 
-        // Click vào toàn bộ card để xem chi tiết
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onOrderClick(order);
-            }
+        // Xem chi tiết khi bấm vào nút hoặc card
+        holder.binding.btnViewDetail.setOnClickListener(v -> {
+            if (listener != null) listener.onOrderClick(order);
         });
 
-        // Click vào nút hành động (Ví dụ: "Sẵn sàng" -> "Hoàn thành")
-        holder.binding.btnStatusAction.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onStatusActionClick(order);
-            }
+        // Xử lý các nút bấm nhanh (Xác nhận/Từ chối)
+        holder.binding.btnAccept.setOnClickListener(v -> {
+            if (listener != null) listener.onAcceptOrder(order);
+        });
+
+        holder.binding.btnReject.setOnClickListener(v -> {
+            if (listener != null) listener.onRejectOrder(order);
         });
     }
 
     @Override
     public int getItemCount() {
-        return orderList.size();
+        return orderList != null ? orderList.size() : 0;
     }
 
     public static class OrderViewHolder extends RecyclerView.ViewHolder {
@@ -79,12 +80,69 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
 
         public void bind(Order order) {
-            binding.tvOrderId.setText("#" + order.getId());
-            binding.tvCustomerName.setText("Khách hàng: " + order.getTargetId());
-            binding.tvOrderStatus.setText(order.getStatus());
-            binding.tvTotalAmount.setText("Tổng tiền: " + priceFormat.format(order.getTotalAmount()));
+            // 1. Mã đơn hàng (Lấy 5 ký tự cuối cho đẹp)
+            binding.tvOrderId.setText("#" + (order.getId() != null && order.getId().length() > 5
+                    ? order.getId().substring(order.getId().length() - 5).toUpperCase()
+                    : "000"));
 
-            // TODO: Thiết lập màu sắc và text cho nút hành động dựa trên order.getStatus()
+            // 2. Trạng thái (Chip)
+            binding.chipStatus.setText(order.getStatus());
+            setupStatusStyle(order.getStatus());
+
+            // 3. Loại đơn & Thông tin (Bàn hoặc Tên khách)
+            String info = order.getType().equalsIgnoreCase("Takeaway")
+                    ? "🥤 Mang về: " + order.getTargetId()
+                    : "🪑 Bàn: " + order.getTargetId();
+            binding.tvOrderType.setText(info);
+
+            // 4. Tổng tiền
+            binding.tvOrderTotal.setText(priceFormat.format(order.getTotalAmount()));
+
+            // 5. Hiển thị danh sách món tóm tắt (Nếu có)
+            if (order.getItems() != null && !order.getItems().isEmpty()) {
+                StringBuilder summary = new StringBuilder();
+                for (int i = 0; i < order.getItems().size(); i++) {
+                    summary.append(order.getItems().get(i).getQuantity())
+                            .append("x ")
+                            .append(order.getItems().get(i).getName());
+                    if (i < order.getItems().size() - 1) summary.append(", ");
+                }
+                binding.tvOrderItems.setText(summary.toString());
+            }
+
+            // 6. Tối ưu nút bấm chuyển trạng thái
+            // Hiển thị quickActions ở tab Pending (để Xác nhận) và Preparing (để báo Pha xong)
+            if ("Pending".equalsIgnoreCase(order.getStatus())) {
+                binding.quickActions.setVisibility(View.VISIBLE);
+                binding.btnAccept.setText("✓ Xác nhận");
+                binding.btnReject.setVisibility(View.VISIBLE);
+            } else if ("Preparing".equalsIgnoreCase(order.getStatus())) {
+                binding.quickActions.setVisibility(View.VISIBLE);
+                binding.btnAccept.setText("☕ Pha xong");
+                binding.btnReject.setVisibility(View.GONE); // Đã làm thì không cho từ chối
+            } else if ("Ready".equalsIgnoreCase(order.getStatus())) {
+                binding.quickActions.setVisibility(View.VISIBLE);
+                binding.btnAccept.setText("✅ Hoàn tất");
+                binding.btnReject.setVisibility(View.GONE);
+            } else {
+                binding.quickActions.setVisibility(View.GONE);
+            }
+        }
+
+        private void setupStatusStyle(String status) {
+            int colorRes = R.color.status_pending; // Mặc định xanh dương (Pending)
+
+            if ("Preparing".equalsIgnoreCase(status)) {
+                colorRes = R.color.status_warning; // Vàng (Đang pha)
+            } else if ("Ready".equalsIgnoreCase(status)) {
+                colorRes = R.color.status_success; // Xanh lá (Sẵn sàng)
+            } else if ("Completed".equalsIgnoreCase(status)) {
+                colorRes = R.color.text_tertiary; // Xám (Hoàn thành)
+            } else if ("Cancelled".equalsIgnoreCase(status)) {
+                colorRes = R.color.status_error; // Đỏ (Hủy)
+            }
+
+            binding.chipStatus.setChipBackgroundColorResource(colorRes);
         }
     }
 }

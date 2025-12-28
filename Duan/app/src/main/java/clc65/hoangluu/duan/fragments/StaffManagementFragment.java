@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import android.content.Context;
+import android.content.SharedPreferences;
+import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
@@ -41,74 +44,119 @@ public class StaffManagementFragment extends Fragment implements StaffAdapter.On
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        super.onViewCreated(view, savedInstanceState); // ✅ GỌI TRƯỚC
+
+        // **********************************************************
+        // LOGIC KIỂM TRA QUYỀN TRUY CẬP (CHỈ ADMIN)
+        // **********************************************************
+        if (getContext() == null) {
+            return;
+        }
+
+        SharedPreferences sharedPref = getContext().getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
+        String userRole = sharedPref.getString("userRole", "Guest");
+
+        boolean isAuthenticated = FirebaseAuth.getInstance().getCurrentUser() != null;
+        boolean hasPermission = "Admin".equalsIgnoreCase(userRole);
+
+        if (!isAuthenticated || !hasPermission) {
+            Toast.makeText(getContext(), "Chức năng Quản lý Nhân viên chỉ dành cho Admin đã đăng nhập.", Toast.LENGTH_LONG).show();
+            try {
+                NavController navController = Navigation.findNavController(view);
+                navController.popBackStack();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+        // **********************************************************
+        // KẾT THÚC KIỂM TRA
+        // **********************************************************
 
         setupRecyclerView();
         setupBackButton(view);
         startListeningForStaffList();
 
-        binding.btnAddStaff.setOnClickListener(v -> {
-            Toast.makeText(getContext(), "Mở Dialog Thêm tài khoản mới", Toast.LENGTH_SHORT).show();
-            // TODO: Mở Dialog/Fragment để Admin nhập thông tin Email, Tên, Mật khẩu, Vai trò
-        });
+        if (binding.btnAddStaff != null) {
+            binding.btnAddStaff.setOnClickListener(v -> {
+                Toast.makeText(getContext(), "Mở Dialog Thêm tài khoản mới", Toast.LENGTH_SHORT).show();
+                // TODO: Mở Dialog/Fragment để Admin nhập thông tin Email, Tên, Mật khẩu, Vai trò
+            });
+        }
     }
 
     private void setupBackButton(View view) {
-        binding.btnBack.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(view);
-            navController.popBackStack();
-        });
+        if (binding.btnBack != null) {
+            binding.btnBack.setOnClickListener(v -> {
+                try {
+                    NavController navController = Navigation.findNavController(view);
+                    navController.popBackStack();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     private void setupRecyclerView() {
-        binding.rvStaffList.setLayoutManager(new LinearLayoutManager(getContext()));
-        staffAdapter = new StaffAdapter(new ArrayList<>());
-        staffAdapter.setOnStaffActionListener(this);
-        binding.rvStaffList.setAdapter(staffAdapter);
+        if (binding.rvStaffList != null) {
+            binding.rvStaffList.setLayoutManager(new LinearLayoutManager(getContext()));
+            staffAdapter = new StaffAdapter(new ArrayList<>());
+            staffAdapter.setOnStaffActionListener(this);
+            binding.rvStaffList.setAdapter(staffAdapter);
+        }
     }
 
     private void startListeningForStaffList() {
-        // Lắng nghe tất cả các tài liệu trong collection "users" (Vai trò được lưu ở đây)
-        Query query = db.collection("users").orderBy("role", Query.Direction.DESCENDING);
+        try {
+            Query query = db.collection("users").orderBy("role", Query.Direction.DESCENDING);
 
-        staffListener = query.addSnapshotListener((snapshots, e) -> {
-            if (e != null) {
-                Toast.makeText(getContext(), "Lỗi tải danh sách nhân viên: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            if (snapshots != null) {
-                List<User> users = new ArrayList<>();
-                for (com.google.firebase.firestore.DocumentSnapshot doc : snapshots.getDocuments()) {
-                    User user = doc.toObject(User.class);
-                    if (user != null) {
-                        user.setUid(doc.getId()); // UID chính là ID tài liệu Firestore
-                        users.add(user);
+            staffListener = query.addSnapshotListener((snapshots, e) -> {
+                if (e != null) {
+                    if (getContext() != null) {
+                        Toast.makeText(getContext(), "Lỗi tải danh sách nhân viên: " + e.getMessage(), Toast.LENGTH_LONG).show();
                     }
+                    return;
                 }
-                staffAdapter.setUserList(users);
+
+                if (snapshots != null && staffAdapter != null) {
+                    List<User> users = new ArrayList<>();
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : snapshots.getDocuments()) {
+                        User user = doc.toObject(User.class);
+                        if (user != null) {
+                            user.setUid(doc.getId());
+                            users.add(user);
+                        }
+                    }
+                    staffAdapter.setUserList(users);
+                }
+            });
+        } catch (Exception ex) {
+            if (getContext() != null) {
+                Toast.makeText(getContext(), "Lỗi khởi tạo Staff Listener: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-        });
+        }
     }
 
-    // Xử lý khi nhấn vào một nhân viên
     @Override
     public void onStaffClick(User user) {
-        Toast.makeText(getContext(), "Xem chi tiết hồ sơ: " + user.getName(), Toast.LENGTH_SHORT).show();
+        if (getContext() != null) {
+            Toast.makeText(getContext(), "Xem chi tiết hồ sơ: " + user.getName(), Toast.LENGTH_SHORT).show();
+        }
     }
 
-    // Xử lý khi nhấn nút Tùy chọn (Sửa/Xóa)
     @Override
     public void onActionClick(User user) {
-        Toast.makeText(getContext(), "Mở menu Sửa/Xóa cho: " + user.getName(), Toast.LENGTH_SHORT).show();
-        // TODO: Mở Bottom Sheet Dialog hoặc Popup Menu cho các hành động Sửa, Đổi mật khẩu, Xóa
+        if (getContext() != null) {
+            Toast.makeText(getContext(), "Mở menu Sửa/Xóa cho: " + user.getName(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
         if (staffListener != null) {
-            staffListener.remove(); // Dừng lắng nghe Firebase
+            staffListener.remove();
         }
     }
 

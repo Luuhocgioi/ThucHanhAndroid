@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Coffee Colors -->
+    <color name="coffee_primary">#6F4E37</color>
+    <color name="coffee_primary_dark">#4A3326</color>
+    <color name="coffee_primary_light">#8B6F47</color>
+
+    <!-- Accent Colors -->
+    <color name="coffee_accent">#D4A574</color>
+    <color name="coffee_accent_light">#E8C9A0</color>
+    <color name="coffee_gold">#C9A961</color>
+
+    <!-- Background Colors -->
+    <color name="background_main">#FFFBF5</color>
+    <color name="background_card">#FFFFFF</color>
+    <color name="background_secondary">#F5F0E8</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#2C2C2C</color>
+    <color name="text_secondary">#6B6B6B</color>
+    <color name="text_tertiary">#999999</color>
+
+    <!-- Status Colors -->
+    <color name="status_success">#4CAF50</color>
+    <color name="status_warning">#FF9800</color>
+    <color name="status_error">#F44336</color>
+    <color name="status_pending">#2196F3</color>
+
+    <!-- Functional Colors -->
+    <color name="price_color">#C9A961</color>
+    <color name="discount_color">#E53935</color>
+    <color name="cart_badge">#FF5722</color>
+
+    <!-- Gradient Colors -->
+    <color name="gradient_start">#8B6F47</color>
+    <color name="gradient_end">#6F4E37</color>
+
+    <!-- Shadow & Overlay -->
+    <color name="shadow_light">#1A000000</color>
+    <color name="overlay_dark">#80000000</color>
+
+    <!-- Border Colors -->
+    <color name="border_light">#E0E0E0</color>
+    <color name="divider">#F0F0F0</color>
 </resources>
