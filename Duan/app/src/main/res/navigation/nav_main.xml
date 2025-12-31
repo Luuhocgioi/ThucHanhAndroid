@@ -81,5 +81,10 @@
         app:destination="@id/homeFragment"
         app:popUpTo="@id/nav_main"
         app:popUpToInclusive="true"/>
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="clc65.hoangluu.duan.fragments.OrderDetailFragment"
+        android:label="Chi tiết đơn hàng"
+        tools:layout="@layout/fragment_order_detail" />
 
 </navigation>

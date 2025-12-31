@@ -4,158 +4,88 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import clc65.hoangluu.duan.database.DatabaseHelper;
 import clc65.hoangluu.duan.models.OrderItem;
 
 public class LocalCartRepository {
-
-    private ProductDbHelper dbHelper;
-    private static final String TAG = "LocalCartRepo";
+    private DatabaseHelper dbHelper;
 
     public LocalCartRepository(Context context) {
-        dbHelper = new ProductDbHelper(context);
+        dbHelper = new DatabaseHelper(context);
     }
 
     public boolean addItemToCart(OrderItem item) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        // Kiểm tra xem món đã có trong giỏ chưa (khớp ID và Ghi chú)
+        Cursor c = db.query("cart", null, "product_id = ? AND note = ?",
+                new String[]{item.getProductId(), item.getNote() == null ? "" : item.getNote()}, null, null, null);
 
-        // Kiểm tra xem mặt hàng đã tồn tại chưa (cùng ProductId và Note)
-        OrderItem existingItem = getExistingItem(db, item.getProductId(), item.getNote());
-
-        if (existingItem != null) {
-            // CẬP NHẬT số lượng
-            int newQuantity = existingItem.getQuantity() + item.getQuantity();
-
-            values.put(ProductContract.CartEntry.COLUMN_NAME_QUANTITY, newQuantity);
-
-            String selection = ProductContract.CartEntry._ID + " = ?";
-            String[] selectionArgs = { String.valueOf(existingItem.getSQLiteId()) };
-
-            int count = db.update(
-                    ProductContract.CartEntry.TABLE_NAME,
-                    values,
-                    selection,
-                    selectionArgs
-            );
-            return count > 0;
-
+        ContentValues v = new ContentValues();
+        if (c != null && c.moveToFirst()) {
+            int newQty = c.getInt(c.getColumnIndexOrThrow("quantity")) + item.getQuantity();
+            v.put("quantity", newQty);
+            int row = db.update("cart", v, "cart_id = ?", new String[]{String.valueOf(c.getInt(0))});
+            c.close();
+            return row > 0;
         } else {
-            // THÊM mới
-            values.put(ProductContract.CartEntry.COLUMN_NAME_PRODUCT_ID, item.getProductId());
-            values.put(ProductContract.CartEntry.COLUMN_NAME_NAME, item.getName());
-            values.put(ProductContract.CartEntry.COLUMN_NAME_QUANTITY, item.getQuantity());
-            values.put(ProductContract.CartEntry.COLUMN_NAME_UNIT_PRICE, item.getPrice());
-            values.put(ProductContract.CartEntry.COLUMN_NAME_NOTE, item.getNote());
+            v.put("product_id", item.getProductId());
+            v.put("name", item.getName());
+            v.put("price", item.getPrice());
+            v.put("quantity", item.getQuantity());
+            v.put("note", item.getNote());
+            // --- THÊM DÒNG NÀY ĐỂ LƯU ẢNH VÀO SQLITE ---
+            v.put("image_url", item.getImageUrl());
 
-            long newRowId = db.insert(ProductContract.CartEntry.TABLE_NAME, null, values);
-            return newRowId != -1;
+            if (c != null) c.close();
+            return db.insert("cart", null, v) != -1;
         }
-    }
-
-    private OrderItem getExistingItem(SQLiteDatabase db, String productId, String note) {
-        String selection = ProductContract.CartEntry.COLUMN_NAME_PRODUCT_ID + " = ? AND " +
-                ProductContract.CartEntry.COLUMN_NAME_NOTE + " = ?";
-        String[] selectionArgs = { productId, note };
-
-        Cursor cursor = db.query(
-                ProductContract.CartEntry.TABLE_NAME,
-                null,
-                selection,
-                selectionArgs,
-                null, null, null, "1"
-        );
-
-        OrderItem item = null;
-        if (cursor.moveToFirst()) {
-            int sqliteId = cursor.getInt(cursor.getColumnIndexOrThrow(ProductContract.CartEntry._ID));
-            int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_QUANTITY));
-
-            item = new OrderItem();
-            item.setSQLiteId(sqliteId);
-            item.setQuantity(quantity);
-        }
-        cursor.close();
-        return item;
-    }
-
-    // PHƯƠNG THỨC BỊ THIẾU ĐÃ ĐƯỢC BỔ SUNG
-    public boolean updateQuantity(int sqLiteId, int newQuantity) {
-        if (newQuantity <= 0) {
-            return deleteItem(sqLiteId);
-        }
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(ProductContract.CartEntry.COLUMN_NAME_QUANTITY, newQuantity);
-
-        String selection = ProductContract.CartEntry._ID + " = ?";
-        String[] selectionArgs = { String.valueOf(sqLiteId) };
-
-        int count = db.update(
-                ProductContract.CartEntry.TABLE_NAME,
-                values,
-                selection,
-                selectionArgs
-        );
-        return count > 0;
-    }
-
-    // PHƯƠNG THỨC BỊ THIẾU ĐÃ ĐƯỢC BỔ SUNG
-    public boolean deleteItem(int sqLiteId) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String selection = ProductContract.CartEntry._ID + " = ?";
-        String[] selectionArgs = { String.valueOf(sqLiteId) };
-
-        int deletedRows = db.delete(
-                ProductContract.CartEntry.TABLE_NAME,
-                selection,
-                selectionArgs
-        );
-        return deletedRows > 0;
     }
 
     public List<OrderItem> getCartItems() {
+        List<OrderItem> list = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        List<OrderItem> cartItems = new ArrayList<>();
-
-        Cursor cursor = db.query(
-                ProductContract.CartEntry.TABLE_NAME,
-                null,
-                null, null, null, null, null
-        );
-
-        while (cursor.moveToNext()) {
-            int sqliteId = cursor.getInt(cursor.getColumnIndexOrThrow(ProductContract.CartEntry._ID));
-            String productId = cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_PRODUCT_ID));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_NAME));
-            int quantity = cursor.getInt(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_QUANTITY));
-            double unitPrice = cursor.getDouble(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_UNIT_PRICE));
-            String note = cursor.getString(cursor.getColumnIndexOrThrow(ProductContract.CartEntry.COLUMN_NAME_NOTE));
-
-            OrderItem item = new OrderItem(productId, name, quantity, unitPrice, note);
-            item.setSQLiteId(sqliteId);
-            cartItems.add(item);
+        Cursor c = db.query("cart", null, null, null, null, null, null);
+        if (c != null && c.moveToFirst()) {
+            do {
+                // SỬA Ở ĐÂY: Truyền đủ 6 tham số vào Constructor bao gồm image_url
+                OrderItem item = new OrderItem(
+                        c.getString(c.getColumnIndexOrThrow("product_id")),
+                        c.getString(c.getColumnIndexOrThrow("name")),
+                        c.getInt(c.getColumnIndexOrThrow("quantity")),
+                        c.getDouble(c.getColumnIndexOrThrow("price")),
+                        c.getString(c.getColumnIndexOrThrow("image_url")), // Thêm tham số này
+                        c.getString(c.getColumnIndexOrThrow("note"))
+                );
+                item.setSQLiteId(c.getInt(c.getColumnIndexOrThrow("cart_id")));
+                list.add(item);
+            } while (c.moveToNext());
+            c.close();
         }
-        cursor.close();
-        return cartItems;
+        return list;
+    }
+
+    // Các hàm clearCart, getTotalPrice, updateQuantity giữ nguyên của bạn...
+    public void clearCart() {
+        dbHelper.getWritableDatabase().delete("cart", null, null);
     }
 
     public double getTotalPrice() {
-        List<OrderItem> items = getCartItems();
-        double total = 0.0;
-        for (OrderItem item : items) {
-            total += item.getQuantity() * item.getPrice();
-        }
+        double total = 0;
+        for (OrderItem i : getCartItems()) total += i.getQuantity() * i.getPrice();
         return total;
     }
 
-    public void clearCart() {
+    public boolean updateQuantity(int id, int qty) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        dbHelper.clearCart(db);
+        if (qty <= 0) return db.delete("cart", "cart_id = ?", new String[]{String.valueOf(id)}) > 0;
+        ContentValues v = new ContentValues();
+        v.put("quantity", qty);
+        return db.update("cart", v, "cart_id = ?", new String[]{String.valueOf(id)}) > 0;
+    }
+
+    public boolean deleteItem(int id) {
+        return dbHelper.getWritableDatabase().delete("cart", "cart_id = ?", new String[]{String.valueOf(id)}) > 0;
     }
 }

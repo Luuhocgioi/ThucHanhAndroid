@@ -19,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,14 +89,24 @@ public class HomeFragment extends Fragment implements ProductAdapter.OnItemClick
      * THIẾT LẬP SLIDER VỚI HIỆU ỨNG MODERN VÀ INDICATOR
      */
     private void setupModernSlider() {
-        List<SliderItem> sliderItems = Arrays.asList(
-                new SliderItem("https://img.freepik.com/free-vector/coffee-shop-banner-template_23-2148887754.jpg"),
-                new SliderItem("https://img.freepik.com/free-psd/delicious-coffee-social-media-template_23-2148405374.jpg"),
-                new SliderItem("https://img.freepik.com/free-vector/coffee-horizontal-banner-design_23-2148892557.jpg")
-        );
-
+        List<SliderItem> sliderItems = new ArrayList<>();
         sliderAdapter = new SliderAdapter(sliderItems);
         binding.viewPagerSlider.setAdapter(sliderAdapter);
+
+        // 1. Kết nối Firestore để lấy link ảnh thực tế từ collection "banners"
+        FirebaseFirestore.getInstance().collection("banners")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            String url = doc.getString("imageUrl");
+                            if (url != null) {
+                                sliderItems.add(new SliderItem(url));
+                            }
+                        }
+                        sliderAdapter.notifyDataSetChanged();
+                    }
+                });
 
         // Hiệu ứng Transformer (Thu nhỏ 2 bên, tạo chiều sâu)
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
@@ -125,7 +137,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.OnItemClick
     private void loadProductDataFromCache() {
         List<Product> cachedProducts = productRepository.getAllProductsFromCache();
         if (cachedProducts != null) {
-            productAdapter.setProductList(cachedProducts);
+            productAdapter.updateList(cachedProducts);
         }
     }
 
@@ -139,13 +151,6 @@ public class HomeFragment extends Fragment implements ProductAdapter.OnItemClick
         binding.cardStaff.setOnClickListener(v -> navController.navigate(R.id.staffManagementFragment));
         binding.cardRevenue.setOnClickListener(v -> navController.navigate(R.id.revenueReportFragment));
 
-        // Nút lọc sản phẩm (Nếu bạn có làm tính năng Filter)
-        binding.btnFilter.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Tính năng lọc đang phát triển", Toast.LENGTH_SHORT).show());
-
-        // Nút thông báo
-        binding.btnNotifications.setOnClickListener(v ->
-                Toast.makeText(getContext(), "Bạn không có thông báo mới", Toast.LENGTH_SHORT).show());
     }
 
     public void updateManagementMenuVisibility(String userRole) {
@@ -167,7 +172,7 @@ public class HomeFragment extends Fragment implements ProductAdapter.OnItemClick
 
     @Override
     public void onAddToCartClick(Product product) {
-        OrderItem item = new OrderItem(product.getId(), product.getName(), 1, product.getPrice(), "");
+        OrderItem item = new OrderItem(product.getId(), product.getName(), 1, product.getPrice(), product.getImageUrl(),"");
         boolean success = cartRepository.addItemToCart(item);
 
         if (success) {

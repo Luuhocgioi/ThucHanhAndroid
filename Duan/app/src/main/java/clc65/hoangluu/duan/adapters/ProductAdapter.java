@@ -1,13 +1,12 @@
 package clc65.hoangluu.duan.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import clc65.hoangluu.duan.R;
 import clc65.hoangluu.duan.databinding.ItemProductCardBinding;
 import clc65.hoangluu.duan.models.Product;
@@ -18,10 +17,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     private List<Product> productList;
     private OnItemClickListener listener;
-    // Format tiền tệ
     private static final DecimalFormat priceFormat = new DecimalFormat("#,### VNĐ");
 
-    // Interface để xử lý sự kiện click (OnClick XML)
     public interface OnItemClickListener {
         void onAddToCartClick(Product product);
         void onItemDetailClick(Product product);
@@ -35,60 +32,36 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         this.productList = productList;
     }
 
-    // Phương thức cập nhật dữ liệu
-    public void setProductList(List<Product> newProductList) {
-        this.productList = newProductList;
-        notifyDataSetChanged();
+    public ProductAdapter(List<Product> productList, OnItemClickListener listener) {
+        this.productList = productList;
+        this.listener = listener;
     }
 
+    public void updateList(List<Product> newList) {
+        this.productList = newList;
+        notifyDataSetChanged();
+    }
 
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Sử dụng ViewBinding cho item layout
         ItemProductCardBinding binding = ItemProductCardBinding.inflate(
-                LayoutInflater.from(parent.getContext()),
-                parent,
-                false
-        );
+                LayoutInflater.from(parent.getContext()), parent, false);
         return new ProductViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product currentProduct = productList.get(position);
-
-        holder.bind(currentProduct);
-
-        // KHẮC PHỤC LỖI: Sử dụng ID đúng từ XML: btnAddToCart (hoặc btn_add_to_cart trong XML)
-        holder.binding.btnAddToCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onAddToCartClick(currentProduct);
-                }
-            }
-        });
-
-        // Xử lý sự kiện click trên toàn bộ item (Activity is listener)
-        holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null) {
-                    listener.onItemDetailClick(currentProduct);
-                }
-            }
-        });
+        holder.bind(currentProduct, listener);
     }
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        return productList != null ? productList.size() : 0;
     }
 
-    // ViewHolder Class
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        // Khai báo binding của item layout
         public ItemProductCardBinding binding;
 
         public ProductViewHolder(ItemProductCardBinding binding) {
@@ -96,13 +69,40 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             this.binding = binding;
         }
 
-        public void bind(Product product) {
-            // Lưu ý: Các ID trong Binding được chuyển thành camelCase
+        public void bind(Product product, OnItemClickListener listener) {
             binding.tvProductName.setText(product.getName());
             binding.tvProductPrice.setText(priceFormat.format(product.getPrice()));
 
-            // TODO: Load ảnh bằng Glide hoặc Picasso
-            // Glide.with(binding.imgProduct.getContext()).load(product.getImageUrl()).into(binding.imgProduct);
+            binding.btnAddToCart.setOnClickListener(v -> {
+                if (listener != null) listener.onAddToCartClick(product);
+            });
+
+            binding.getRoot().setOnClickListener(v -> {
+                if (listener != null) listener.onItemDetailClick(product);
+            });
+            binding.getRoot().setOnClickListener(v -> {
+                // Tạo Bundle và đóng gói đối tượng product
+                android.os.Bundle bundle = new android.os.Bundle();
+                bundle.putSerializable("product", product); // Đảm bảo class Product đã "implements Serializable"
+
+                // Thực hiện chuyển màn hình kèm theo dữ liệu
+                androidx.navigation.Navigation.findNavController(v)
+                        .navigate(R.id.detailFragment, bundle);
+
+                // Vẫn giữ lại listener cũ của bạn nếu cần dùng thêm logic khác
+                if (listener != null) listener.onItemDetailClick(product);
+            });
+            if (product.getImageUrl() != null && !product.getImageUrl().trim().isEmpty()) {
+                Glide.with(binding.imgProduct.getContext())
+                        .load(product.getImageUrl().trim())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.ic_coffee_placeholder)
+                        .error(R.drawable.ic_coffee_placeholder)
+                        .centerCrop()
+                        .into(binding.imgProduct);
+            } else {
+                binding.imgProduct.setImageResource(R.drawable.ic_coffee_placeholder);
+            }
         }
     }
 }

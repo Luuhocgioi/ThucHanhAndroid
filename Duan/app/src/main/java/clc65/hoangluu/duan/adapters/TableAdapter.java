@@ -3,12 +3,10 @@ package clc65.hoangluu.duan.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -52,18 +50,11 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
     public void onBindViewHolder(@NonNull TableViewHolder holder, int position) {
         Table table = tableList.get(position);
         holder.bind(table);
-
-        // Xử lý sự kiện click (Inline Anonymous Listener)
-        holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onTableClick(table);
-            }
-        });
     }
 
     @Override
     public int getItemCount() {
-        return tableList.size();
+        return tableList != null ? tableList.size() : 0;
     }
 
     public class TableViewHolder extends RecyclerView.ViewHolder {
@@ -75,21 +66,37 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.TableViewHol
         }
 
         public void bind(Table table) {
+            // Hiển thị tên bàn (VD: Bàn 01)
             binding.tvTableName.setText(table.getName());
-            binding.tvTableStatus.setText(table.getStatus());
 
-            // Tùy chỉnh màu sắc dựa trên trạng thái
-            if (table.getStatus().equals("Occupied") || table.getStatus().equals("Serving")) {
-                // Đang sử dụng -> Màu đỏ hoặc cam (Occupied)
-                binding.tableStatusIndicator.setBackgroundColor(ContextCompat.getColor(context, android.R.color.holo_red_light));
-                binding.tvTableStatus.setTextColor(Color.WHITE);
-                binding.tvTableName.setTextColor(Color.WHITE);
-            } else {
-                // Trống (Available) -> Màu xanh lá cây hoặc trắng
-                binding.tableStatusIndicator.setBackgroundColor(ContextCompat.getColor(context, android.R.color.white));
-                binding.tvTableStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_green_dark));
+            // Xử lý màu sắc dựa trên trạng thái
+            if ("Occupied".equalsIgnoreCase(table.getStatus()) || "Serving".equalsIgnoreCase(table.getStatus())) {
+
+                // TRẠNG THÁI CÓ MÓN (Đang có khách)
+                binding.cardTable.setCardBackgroundColor(ContextCompat.getColor(context, R.color.status_error)); // Màu đỏ
                 binding.tvTableName.setTextColor(Color.BLACK);
+
+                // Hiển thị văn bản "Đã có món"
+                binding.tvTableStatus.setText("Đã có món");
+                binding.tvTableStatus.setTextColor(Color.RED);
+
+            } else {
+
+                // TRẠNG THÁI CHƯA CÓ MÓN (Bàn trống)
+                binding.cardTable.setCardBackgroundColor(Color.WHITE); // Màu trắng
+                binding.tvTableName.setTextColor(Color.BLACK);
+
+                // Hiển thị văn bản "Bàn trống"
+                binding.tvTableStatus.setText("Bàn trống");
+                binding.tvTableStatus.setTextColor(Color.GRAY);
             }
+
+            // Sự kiện click
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onTableClick(table);
+                }
+            });
         }
     }
 }

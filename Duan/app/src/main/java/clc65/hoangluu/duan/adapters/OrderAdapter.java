@@ -1,9 +1,11 @@
 package clc65.hoangluu.duan.adapters;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
@@ -51,12 +53,29 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         Order order = orderList.get(position);
         holder.bind(order);
 
-        // Xem chi tiết khi bấm vào nút hoặc card
-        holder.binding.btnViewDetail.setOnClickListener(v -> {
-            if (listener != null) listener.onOrderClick(order);
-        });
+        // --- SỬA LỖI: Gộp các sự kiện Click vào một chỗ duy nhất ---
 
-        // Xử lý các nút bấm nhanh (Xác nhận/Từ chối)
+        // 1. Click vào nút "Chi tiết" hoặc toàn bộ Card để xem món ăn
+        View.OnClickListener detailClick = v -> {
+            // Thực hiện callback ra Fragment nếu cần xử lý thêm
+            if (listener != null) listener.onOrderClick(order);
+
+            // Chuyển màn hình sang OrderDetailFragment kèm dữ liệu
+            Bundle bundle = new Bundle();
+            bundle.putString("orderId", order.getId());
+
+            String displayName = order.getType().equalsIgnoreCase("TakeAway")
+                    ? "Khách mang về: " + order.getTargetId()
+                    : "Bàn: " + order.getTargetId();
+            bundle.putString("tableName", displayName);
+
+            Navigation.findNavController(v).navigate(R.id.orderDetailFragment, bundle);
+        };
+
+        holder.binding.btnViewDetail.setOnClickListener(detailClick);
+        holder.itemView.setOnClickListener(detailClick); // Bấm vào card cũng ra chi tiết
+
+        // 2. Xử lý các nút bấm nhanh (Xác nhận/Từ chối)
         holder.binding.btnAccept.setOnClickListener(v -> {
             if (listener != null) listener.onAcceptOrder(order);
         });
@@ -80,25 +99,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
 
         public void bind(Order order) {
-            // 1. Mã đơn hàng (Lấy 5 ký tự cuối cho đẹp)
+            // Hiển thị mã đơn hàng
             binding.tvOrderId.setText("#" + (order.getId() != null && order.getId().length() > 5
                     ? order.getId().substring(order.getId().length() - 5).toUpperCase()
                     : "000"));
 
-            // 2. Trạng thái (Chip)
             binding.chipStatus.setText(order.getStatus());
             setupStatusStyle(order.getStatus());
 
-            // 3. Loại đơn & Thông tin (Bàn hoặc Tên khách)
-            String info = order.getType().equalsIgnoreCase("Takeaway")
+            String info = order.getType().equalsIgnoreCase("TakeAway")
                     ? "🥤 Mang về: " + order.getTargetId()
                     : "🪑 Bàn: " + order.getTargetId();
             binding.tvOrderType.setText(info);
 
-            // 4. Tổng tiền
             binding.tvOrderTotal.setText(priceFormat.format(order.getTotalAmount()));
 
-            // 5. Hiển thị danh sách món tóm tắt (Nếu có)
+            // Hiển thị danh sách món tóm tắt
             if (order.getItems() != null && !order.getItems().isEmpty()) {
                 StringBuilder summary = new StringBuilder();
                 for (int i = 0; i < order.getItems().size(); i++) {
@@ -110,8 +126,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
                 binding.tvOrderItems.setText(summary.toString());
             }
 
-            // 6. Tối ưu nút bấm chuyển trạng thái
-            // Hiển thị quickActions ở tab Pending (để Xác nhận) và Preparing (để báo Pha xong)
+            // Quản lý hiển thị nút bấm theo trạng thái đơn hàng
             if ("Pending".equalsIgnoreCase(order.getStatus())) {
                 binding.quickActions.setVisibility(View.VISIBLE);
                 binding.btnAccept.setText("✓ Xác nhận");
@@ -119,7 +134,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
             } else if ("Preparing".equalsIgnoreCase(order.getStatus())) {
                 binding.quickActions.setVisibility(View.VISIBLE);
                 binding.btnAccept.setText("☕ Pha xong");
-                binding.btnReject.setVisibility(View.GONE); // Đã làm thì không cho từ chối
+                binding.btnReject.setVisibility(View.GONE);
             } else if ("Ready".equalsIgnoreCase(order.getStatus())) {
                 binding.quickActions.setVisibility(View.VISIBLE);
                 binding.btnAccept.setText("✅ Hoàn tất");
@@ -130,17 +145,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         }
 
         private void setupStatusStyle(String status) {
-            int colorRes = R.color.status_pending; // Mặc định xanh dương (Pending)
-
-            if ("Preparing".equalsIgnoreCase(status)) {
-                colorRes = R.color.status_warning; // Vàng (Đang pha)
-            } else if ("Ready".equalsIgnoreCase(status)) {
-                colorRes = R.color.status_success; // Xanh lá (Sẵn sàng)
-            } else if ("Completed".equalsIgnoreCase(status)) {
-                colorRes = R.color.text_tertiary; // Xám (Hoàn thành)
-            } else if ("Cancelled".equalsIgnoreCase(status)) {
-                colorRes = R.color.status_error; // Đỏ (Hủy)
-            }
+            int colorRes = R.color.status_pending;
+            if ("Preparing".equalsIgnoreCase(status)) colorRes = R.color.status_warning;
+            else if ("Ready".equalsIgnoreCase(status)) colorRes = R.color.status_success;
+            else if ("Completed".equalsIgnoreCase(status)) colorRes = R.color.text_tertiary;
+            else if ("Cancelled".equalsIgnoreCase(status)) colorRes = R.color.status_error;
 
             binding.chipStatus.setChipBackgroundColorResource(colorRes);
         }

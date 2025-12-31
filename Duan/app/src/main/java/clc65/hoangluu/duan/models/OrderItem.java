@@ -6,15 +6,17 @@ public class OrderItem {
     private String name;
     private int quantity;
     private double price;
+    private String imageUrl;
     private String note;
 
     public OrderItem() {}
 
-    public OrderItem(String productId, String name, int quantity, double price, String note) {
+    public OrderItem(String productId, String name, int quantity, double price, String imageUrl, String note) {
         this.productId = productId;
         this.name = name;
         this.quantity = quantity;
         this.price = price;
+        this.imageUrl = imageUrl;
         this.note = note;
     }
 
@@ -39,4 +41,6 @@ public class OrderItem {
     public void setPrice(double price) { this.price = price; }
     public String getNote() { return note; }
     public void setNote(String note) { this.note = note; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

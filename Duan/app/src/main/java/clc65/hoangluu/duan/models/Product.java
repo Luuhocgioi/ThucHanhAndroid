@@ -1,11 +1,17 @@
 package clc65.hoangluu.duan.models;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
     private String id;
     private String name;
     private double price;
     private String imageUrl;
-    private String description; // TRƯỜNG MỚI ĐÃ ĐƯỢC THÊM VÀO
+    private String description;
+
+
+
+    private String category;
 
     public Product() {}
 
@@ -68,5 +74,12 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

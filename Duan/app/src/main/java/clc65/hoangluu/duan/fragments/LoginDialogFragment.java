@@ -1,6 +1,8 @@
 package clc65.hoangluu.duan.fragments;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import androidx.fragment.app.DialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import clc65.hoangluu.duan.database.DatabaseHelper;
 import clc65.hoangluu.duan.databinding.DialogLoginBinding;
 
 public class LoginDialogFragment extends DialogFragment {
@@ -22,6 +25,7 @@ public class LoginDialogFragment extends DialogFragment {
     private DialogLoginBinding binding;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private DatabaseHelper dbHelper; // Thêm dbHelper để thao tác SQLite
     private static final String TAG = "LoginDialog";
 
     public interface LoginListener {
@@ -34,9 +38,14 @@ public class LoginDialogFragment extends DialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            loginListener = (LoginListener) getTargetFragment();
+            // Kiểm tra target fragment hoặc activity để gán listener
+            if (getTargetFragment() instanceof LoginListener) {
+                loginListener = (LoginListener) getTargetFragment();
+            } else if (context instanceof LoginListener) {
+                loginListener = (LoginListener) context;
+            }
         } catch (ClassCastException e) {
-            throw new ClassCastException("Calling Fragment must implement LoginListener");
+            throw new ClassCastException("Calling UI must implement LoginListener");
         }
     }
 
@@ -45,6 +54,7 @@ public class LoginDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        dbHelper = new DatabaseHelper(getContext()); // Khởi tạo dbHelper
     }
 
     @Nullable
@@ -94,16 +104,22 @@ public class LoginDialogFragment extends DialogFragment {
                     showProgress(false);
                     if (documentSnapshot.exists()) {
                         String role = documentSnapshot.getString("role");
-                        if (role != null) {
+                        String name = documentSnapshot.getString("name");
+                        String email = documentSnapshot.getString("email");
 
-                            // *** SỬA LỖI VÀ CHUẨN HÓA VAI TRÒ ***
+                        if (role != null) {
+                            // *** CHUẨN HÓA VAI TRÒ ĐỂ KHỚP VỚI LOGIC APP ***
                             role = role.trim();
                             if (role.length() > 0) {
                                 role = role.substring(0, 1).toUpperCase() + role.substring(1).toLowerCase();
                             }
-                            // *** KẾT THÚC CHUẨN HÓA ***
 
-                            loginListener.onLoginSuccess(role);
+                            // *** LƯU VÀO SQLITE ĐỂ DUY TRÌ PHIÊN LÀM VIỆC ***
+                            saveStaffToSQLite(uid, name, email, role);
+
+                            if (loginListener != null) {
+                                loginListener.onLoginSuccess(role);
+                            }
                             dismiss();
                         } else {
                             Toast.makeText(getContext(), "Không tìm thấy vai trò người dùng.", Toast.LENGTH_SHORT).show();
@@ -122,11 +138,28 @@ public class LoginDialogFragment extends DialogFragment {
                 });
     }
 
+    // Hàm thực hiện lưu thông tin nhân viên/admin vào SQLite cục bộ
+    private void saveStaffToSQLite(String uid, String name, String email, String role) {
+        try {
+            SQLiteDatabase dbSqlite = dbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("uid", uid);
+            values.put("name", name != null ? name : "Unknown");
+            values.put("email", email != null ? email : "");
+            values.put("role", role);
+
+            // Sử dụng REPLACE để cập nhật nếu UID đã tồn tại
+            dbSqlite.insertWithOnConflict("staff", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            Log.d(TAG, "Saved staff to SQLite: " + role);
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving to SQLite", e);
+        }
+    }
+
     private void showProgress(boolean show) {
         binding.progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
         binding.btnDialogLogin.setEnabled(!show);
     }
-
 
     @Override
     public void onDestroyView() {

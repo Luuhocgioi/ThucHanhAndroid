@@ -1,111 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DetailFragment">
+    android:background="@color/background_main">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="300dp"
+        android:background="@android:color/transparent">
 
-        <ImageView
-            android:id="@+id/img_product_detail"
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_coffee_placeholder"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-        <TextView
-            android:id="@+id/tv_product_name_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            tools:text="Cà phê Đá Xay"
-            android:layout_marginBottom="8dp"/>
+            <ImageView
+                android:id="@+id/img_product_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_coffee_placeholder"
+                app:layout_collapseMode="parallax" />
 
-        <TextView
-            android:id="@+id/tv_product_price_detail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:textColor="@android:color/holo_red_dark"
-            tools:text="65.000 VNĐ"
-            android:layout_marginBottom="16dp"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:id="@+id/tv_product_description_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Mô tả chi tiết về sản phẩm, thành phần, và các tùy chọn đặc biệt khác."
-            android:layout_marginBottom="24dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Số lượng:"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-30dp"
+        android:background="@drawable/bg_bottom_sheet_card"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical">
-
-            <Button
-                android:id="@+id/btn_decrement"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:text="-"
-                android:textSize="18sp"/>
+            android:orientation="vertical"
+            android:padding="24dp">
 
             <TextView
-                android:id="@+id/tv_quantity"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="1"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <Button
-                android:id="@+id/btn_increment"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:text="+"
-                android:textSize="18sp"/>
-        </LinearLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ghi chú (Ví dụ: Ít đường, thêm đá)"
-            android:layout_marginTop="24dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_product_note"
+                android:id="@+id/tv_product_name_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="3"
-                android:maxLines="3"
-                android:gravity="top|start"
-                android:inputType="textMultiLine" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textSize="26sp"
+                android:textStyle="bold"
+                android:textColor="#3E2723"
+                tools:text="Cà phê Đá Xay" />
 
-        <Button
-            android:id="@+id/btn_add_to_cart_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thêm vào Giỏ hàng"
-            android:layout_marginTop="32dp"/>
+            <TextView
+                android:id="@+id/tv_product_price_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="22sp"
+                android:textColor="@color/coffee_primary"
+                android:textStyle="bold"
+                tools:text="65.000 VNĐ" />
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+            <View
+                android:layout_width="60dp"
+                android:layout_height="4dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/coffee_primary" />
+
+            <TextView
+                android:id="@+id/tv_product_description_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4dp"
+                tools:text="Mô tả chi tiết về sản phẩm thơm ngon hảo hạng..." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Số lượng mua"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#3E2723"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:gravity="center_vertical"
+                android:background="@drawable/bg_quantity_control"
+                android:padding="4dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_decrement"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:text="-"
+                    android:textSize="22sp"
+                    android:textColor="#3E2723"
+                    app:rippleColor="#D7CCC8"/>
+
+                <TextView
+                    android:id="@+id/tv_quantity"
+                    android:layout_width="48dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#3E2723"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_increment"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:text="+"
+                    android:textSize="22sp"
+                    android:textColor="#3E2723"
+                    app:rippleColor="#D7CCC8"/>
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:hint="Ghi chú thêm (Ít đường, thêm đá...)"
+                app:boxStrokeColor="#3E2723"
+                app:hintTextColor="#3E2723"
+                app:startIconDrawable="@drawable/ic_note"
+                app:startIconTint="#3E2723">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_product_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:gravity="top|start"
+                    android:textColor="#3E2723"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_add_to_cart_detail"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="24dp"
+                android:text="Thêm vào Giỏ hàng"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:cornerRadius="16dp"
+                app:backgroundTint="#3E2723"
+                app:elevation="4dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:background="@drawable/bg_circle_white"
+        android:elevation="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back"
+        app:tint="#3E2723" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

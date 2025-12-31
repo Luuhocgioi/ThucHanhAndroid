@@ -35,12 +35,14 @@
     <!-- Search Bar -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/search_card"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="-28dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/header_section">
 
         <com.google.android.material.textfield.TextInputLayout
@@ -49,8 +51,7 @@
             app:boxBackgroundMode="none"
             app:hintEnabled="false"
             app:startIconDrawable="@drawable/ic_search"
-            app:endIconMode="clear_text"
-            app:endIconDrawable="@drawable/ic_close">
+            app:endIconMode="clear_text">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_search_query"
@@ -59,28 +60,33 @@
                 android:hint="Tìm kiếm đồ uống..."
                 android:inputType="text"
                 android:textSize="16sp"
-                android:paddingVertical="16dp"
-                android:background="@android:color/transparent"/>
+                android:paddingVertical="12dp"
+                android:background="@android:color/transparent"
+                android:maxLines="1"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"/>
 
         </com.google.android.material.textfield.TextInputLayout>
     </com.google.android.material.card.MaterialCardView>
-
     <!-- Quick Filters (Categories) -->
     <HorizontalScrollView
         android:id="@+id/category_scroll"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:scrollbars="none"
         android:paddingVertical="16dp"
         android:paddingHorizontal="16dp"
         android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_card">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_categories"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleSelection="false">
+            app:singleSelection="false"
+            app:singleLine="true">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_all_drinks"
@@ -124,13 +130,15 @@
     <!-- Results Header -->
     <LinearLayout
         android:id="@+id/results_header"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
         android:paddingVertical="12dp"
         android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/category_scroll"
         tools:visibility="visible">
 
@@ -143,6 +151,8 @@
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:ellipsize="end"
+            android:maxLines="1"
             tools:text="Kết quả cho &quot;cà phê&quot; (5)"/>
 
         <TextView
@@ -159,11 +169,13 @@
     <!-- Search Results RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_search_results"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:paddingHorizontal="12dp"
         android:paddingBottom="80dp"
         android:clipToPadding="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/results_header"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_product_card"/>
